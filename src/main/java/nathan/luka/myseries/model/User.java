@@ -4,9 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class User {
-    private int id;
+    public static int lastId = 1;
 
+    private int id;
     private String username;
+
 
     private String password;
 
@@ -22,8 +24,8 @@ public class User {
         this.username = username;
         this.password = password;
         this.displayName = displayName;
-        this.serie = new HashSet<>();
-        this.reviews = new HashSet<>();
+        this.id = lastId;
+        lastId++;
     }
 
     public String getUsername() {
@@ -60,6 +62,22 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public static int getLastId() {
+        return lastId;
+    }
+
+    public static void setLastId(int lastId) {
+        User.lastId = lastId;
+    }
+
+    public void setSerie(Set<Serie> serie) {
+        this.serie = serie;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public void setUsername(String username) {

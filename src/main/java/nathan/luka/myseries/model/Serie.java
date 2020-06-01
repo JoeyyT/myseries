@@ -1,26 +1,46 @@
 package nathan.luka.myseries.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Serie {
+    private static int lastId;
+
+    private int id;
+
     private String title;
     private String imageurl;
     private String category;
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    private User user;
     private List<Review> reviews;
     private boolean completed;
 
+    public int getId() {
+        return id;
+    }
+
     public Serie() {
+        this.id = lastId;
+        lastId++;
+        this.reviews = new ArrayList<>();
     }
 
-    public Serie(String title) {
+    public Serie(String title, User user) {
+        this();
         this.title = title;
+        this.user = user;
     }
 
-    public Serie(String title, String imageURL) {
-        this.title = title;
-        this.imageurl = imageURL;
+
+    public void addReview(Review review){
+        this.reviews.add(review);
     }
+
 
     public String getTitle() {
         return title;

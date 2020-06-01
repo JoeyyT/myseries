@@ -1,0 +1,52 @@
+package nathan.luka.myseries.controller;
+
+import nathan.luka.myseries.dataprovider.DataProvider;
+import nathan.luka.myseries.model.Serie;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+
+@Controller
+public class SeriesController {
+    private DataProvider model = DataProvider.getDataProvider().getInstance();
+
+    //load all series
+    @RequestMapping("/series")
+    @ResponseBody
+    public ArrayList<Serie> getSeries(){
+        ArrayList<Serie> subjects = model.getSeries();
+        return subjects;
+    }
+
+
+    //adds new serie
+
+    @PostMapping("/series")
+    public ResponseEntity<Serie> addSubject(@RequestBody Serie serie, @RequestParam("user")String username) {
+        if (model.hasUserWithUsername(username)) {
+            model.addSerie(serie);
+            serie.setUser(model.getUserByUsername(username));
+            return new ResponseEntity<>(serie, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    //get a specific serie
+
+    @GetMapping("/serie/{id}")
+    @ResponseBody
+    public Serie getSerie(@PathVariable("id") int id) {
+        Serie serie = model.getSerieById(id);
+        if (serie != null) {
+            return serie;
+        }
+        return null;
+    }
+
+
+
+}

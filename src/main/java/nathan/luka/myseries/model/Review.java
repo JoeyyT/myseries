@@ -1,12 +1,25 @@
 package nathan.luka.myseries.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Review {
+    private static int lastId;
     private int rating;
     private String comment;
     private LocalDate dateAdded;
     private User user;
+    private  int id;
+
+
+
+    public Review(String comment, User user) {
+        this.id = lastId;
+        lastId++;
+        this.comment = comment;
+        this.user = user;
+    }
+
 
     public int getRating() {
         return rating;
