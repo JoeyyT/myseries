@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
 @Controller
 public class SeriesController {
     private DataProvider model = DataProvider.getDataProvider().getInstance();
@@ -39,11 +37,11 @@ public class SeriesController {
     //get a specific serie
 
     @GetMapping("/serie/{id}")
-    @ResponseBody
-    public Serie getSerie(@PathVariable("id") int id) {
-        Serie serie = model.getSerieById(id);
+    public String getSerie(@PathVariable("id") int id, Model model) {
+        Serie serie = this.model.getSerieById(id);
         if (serie != null) {
-            return serie;
+            model.addAttribute("serie",serie);
+            return "serie";
         }
         return null;
     }

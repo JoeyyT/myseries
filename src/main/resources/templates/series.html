@@ -2,18 +2,7 @@
 <!DOCTYPE html>
 <html lang=”en” xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MyBookShelf</title>
-    <meta name="author" content="Luka">
-    <!--  Text  -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap" rel="stylesheet">
-    <!--  Icons  -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <!--  Personal styling sheet  -->
-    <link rel="stylesheet" href="css/style.css">
-
-</head>
+<div th:replace="fragments/header.html :: header"></div>
 <!--navbar-->
 <div th:replace="fragments/topnav.html :: navbar"></div>
 
@@ -21,27 +10,28 @@
 
 <div class="container">
     <h1>Series: </h1>
-
+    <div th:if="${not #lists.isEmpty(series)}">
     <div th:each="serie : ${series}">
-    <a th:href="@{'/serie/' + ${serie.id}}">
-        <p th:text="${serie.getTitle()}">tekst </p>
-    </a>
-</div>
+        <a th:href="@{'/serie/' + ${serie.id}}">
+            <p th:text="${serie.getTitle()}"></p>
+        </a>
+    </div>
 
-<!--    <table>-->
-<!--        <tr>-->
-<!--            <th>title</th>-->
-<!--            <th>ID</th>-->
-<!--            <th>image</th>-->
-<!--        </tr>-->
-<!--        <tr th:each="serie : ${series}">-->
-
-<!--            <td th:text="${serie.getTitle()}">title</td>-->
-<!--            <td th:text="${serie.getId()}">id</td>-->
-<!--            <td th:text="${serie.getImageurl()}">image</td>-->
-<!--        -->
-<!--        </tr>-->
-<!--    </table>-->
+    <table>
+        <tr>
+            <th>title</th>
+            <th>ID</th>
+            <th>image</th>
+        </tr>
+        <tr th:each="serie : ${series}">
+            <td>
+                <a th:text="${serie.getTitle()}" th:href="@{'/serie/' + ${serie.id}}" target="_blank"></a>
+            </td>
+            <td th:text="${serie.getId()}">id</td>
+            <td th:text="${serie.getImageurl()}">image</td>
+        </tr>
+    </table>
+    </div>
 </div>
 
 </body>
