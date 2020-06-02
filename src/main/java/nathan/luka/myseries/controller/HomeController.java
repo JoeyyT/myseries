@@ -9,10 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     private DataProvider model = DataProvider.getDataProvider().getInstance();
 
-    @GetMapping("/home")
-    public String homeView(Model model){
-        model.addAttribute("series", this.model.getSeries());
-        return "series";
-    }
+
 
 }

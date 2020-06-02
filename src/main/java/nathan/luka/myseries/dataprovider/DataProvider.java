@@ -20,8 +20,9 @@ public class DataProvider {
         series = new ArrayList<>();
         init();
     }
-    public static DataProvider getInstance(){
-        if (dataProvider==null){
+
+    public static DataProvider getInstance() {
+        if (dataProvider == null) {
             dataProvider = new DataProvider();
         }
         return dataProvider;
@@ -36,7 +37,7 @@ public class DataProvider {
         addUser(nathan);
         addUser(theRealDeal);
 
-        Serie serie = new Serie("deez nuts" , theRealDeal, "/img/deeznuts.jpg");
+        Serie serie = new Serie("deez nuts", theRealDeal, "/img/deeznuts.jpg");
         serie.addReview(new Review("good movie about deez nuts", nathan));
         serie.addReview(new Review("ok", luka));
         serie.addReview(new Review("yup", theRealDeal));
@@ -45,10 +46,10 @@ public class DataProvider {
         tokyo_ghoul.addReview(new Review("ok", luka));
 
         Serie pokemon = new Serie("pokemon", luka, "/img/pokemon.jpg");
-        pokemon.addReview(new Review("good movie", theRealDeal ));
+        pokemon.addReview(new Review("good movie", theRealDeal));
 
 
-        Serie deez_nuts2 = new Serie("deez nuts" , theRealDeal, "/img/deeznuts.jpg");
+        Serie deez_nuts2 = new Serie("deez nuts", theRealDeal, "/img/deeznuts.jpg");
         deez_nuts2.addReview(new Review("good movie about deez nuts", nathan));
         deez_nuts2.addReview(new Review("ok", luka));
         deez_nuts2.addReview(new Review("yup", theRealDeal));
@@ -57,7 +58,7 @@ public class DataProvider {
         tokyo_ghoul2.addReview(new Review("ok", luka));
 
         Serie pokemon2 = new Serie("pokemon", luka, "/img/pokemon.jpg");
-        pokemon2.addReview(new Review("good movie", theRealDeal ));
+        pokemon2.addReview(new Review("good movie", theRealDeal));
 
 
         series.add(deez_nuts2);
@@ -73,16 +74,16 @@ public class DataProvider {
         this.users.put(user.getUsername(), user);
     }
 
-    public Serie getSerieById(int id){
+    public Serie getSerieById(int id) {
         for (Serie serie : series) {
-            if (serie.getId() == id){
+            if (serie.getId() == id) {
                 return serie;
             }
         }
         return null;
     }
 
-    public void addSerie(Serie serie){
+    public void addSerie(Serie serie) {
         series.add(serie);
     }
 

@@ -21,7 +21,13 @@
 
 <div class="container">
     <h1>Series: </h1>
-    
+
+    <div th:each="serie : ${series}">
+    <a th:href="@{'/serie/' + ${serie.id}}">
+        <p th:text="${serie.getTitle()}">tekst </p>
+    </a>
+</div>
+
 <!--    <table>-->
 <!--        <tr>-->
 <!--            <th>title</th>-->

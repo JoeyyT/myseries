@@ -6,6 +6,7 @@ import nathan.luka.myseries.model.Serie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,13 +16,12 @@ public class SeriesController {
     private DataProvider model = DataProvider.getDataProvider().getInstance();
 
     //load all series
-    @RequestMapping("/series")
-    @ResponseBody
-    public ArrayList<Serie> getSeries(){
-        ArrayList<Serie> subjects = model.getSeries();
-        return subjects;
-    }
 
+    @GetMapping("/series")
+    public String homeView(Model model){
+        model.addAttribute("series", this.model.getSeries());
+        return "series";
+    }
 
     //adds new serie
 
