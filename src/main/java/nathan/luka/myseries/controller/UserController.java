@@ -31,6 +31,7 @@ public class UserController {
         }
     }
 
+
     @DeleteMapping("/user/{username}")
     public ResponseEntity deleteUser(@PathVariable("username") String username) {
         if (model.hasUserWithUsername(username)) {

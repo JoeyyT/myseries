@@ -30,10 +30,11 @@ public class Serie {
         this.reviews = new ArrayList<>();
     }
 
-    public Serie(String title, User user) {
+    public Serie(String title, User user, String imageurl) {
         this();
         this.title = title;
         this.user = user;
+        this.imageurl = imageurl;
     }
 
 
@@ -45,8 +46,6 @@ public class Serie {
     public String getTitle() {
         return title;
     }
-
-    public String getCategory() { return category; }
 
     public String getImageurl() {
         return imageurl;
