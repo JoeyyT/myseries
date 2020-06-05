@@ -27,8 +27,12 @@
             <td>
                 <a th:text="${serie.getTitle()}" th:href="@{'/serie/' + ${serie.id}}" target="_blank"></a>
             </td>
-            <td th:text="${serie.getId()}">id</td>
-            <td th:text="${serie.getImageurl()}">image</td>
+            <td
+                    th:text="${serie.getId()}">id
+            </td>
+            <td>
+                   <img th:src="${serie.getImageurl()}">
+            </td>
         </tr>
     </table>
     </div>
