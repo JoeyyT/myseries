@@ -7,8 +7,37 @@
 <div th:replace="fragments/topnav.html :: navbar"></div>
 
 <body>
+<div class="seriePart">
+<h1>Serie: </h1>
+<p th:text="${serie.getTitle()}"></p>
+<p th:text="${serie.getId()}"></p>
+<img th:src="${serie.getImageurl()}">
+<h2>reviews</h2>
+</div>
 
-
-
+<div class="class_review">
+    <table>
+        <tr>
+            <th>User</th>
+            <th>comment</th>
+            <th>rating</th>
+            <th>date added</th>
+        </tr>
+        <tr th:each="serie : ${serie.getReview()}">
+            <td>
+                <a th:text="${serie.getUser()}"></a>
+            </td>
+            <td>
+                <a th:text="${serie.getComment()}"></a>
+            </td>
+            <td>
+                <a th:text="${serie.getRating()}"></a>
+            </td>
+            <td>
+                <a th:text="${serie.getDateAdded()}"></a>
+            </td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>
