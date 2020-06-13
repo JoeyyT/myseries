@@ -1,18 +1,17 @@
 package nathan.luka.myseries.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class User {
     public static int lastId = 1;
 
     private int id;
-    private String username;
+    private String email;
 
 
     private String password;
 
-    private String displayName;
+    private String userName;
 
     private Set<Serie> serie;
 
@@ -20,24 +19,24 @@ public class User {
 
     private boolean loggedIn;
 
-    public User(String username, String password, String displayName) {
-        this.username = username;
+    public User(String email, String password, String userName) {
+        this.email = email;
         this.password = password;
-        this.displayName = displayName;
+        this.userName = userName;
         this.id = lastId;
         lastId++;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getUserName() {
+        return userName;
     }
 
     public Set<Serie> getSerie() {
@@ -80,19 +79,19 @@ public class User {
         this.reviews = reviews;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String toString() {
-        return displayName + username;
+        return userName + email;
     }
 }

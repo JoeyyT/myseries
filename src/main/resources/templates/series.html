@@ -1,12 +1,15 @@
 <!-- Put your HTML here -->
-<!DOCTYPE html>
+
 <html lang=”en” xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <div th:replace="fragments/header.html :: header"></div>
 <!--navbar-->
 <div th:replace="fragments/topnav.html :: navbar"></div>
-
 <body>
+
+<form action="#" th:action="@{/series}"  method="post">
+    <input type="text" >
+</form>
 
 <div class="container">
     <h1>Series: </h1>

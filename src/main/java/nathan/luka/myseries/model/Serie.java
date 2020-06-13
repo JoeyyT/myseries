@@ -12,17 +12,11 @@ public class Serie {
     private String imageurl;
     private String category;
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     private User user;
     private List<Review> reviews;
     private boolean completed;
 
-    public int getId() {
-        return id;
-    }
+
 
     public Serie() {
         this.id = lastId;
@@ -37,11 +31,21 @@ public class Serie {
         this.imageurl = imageurl;
     }
 
+    public Serie(String title, User user) {
+        this();
+        this.title = title;
+        this.user = user;
+    }
+
+
 
     public void addReview(Review review){
         this.reviews.add(review);
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getTitle() {
         return title;
@@ -73,7 +77,12 @@ public class Serie {
         this.completed = completed;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String toString() {
         return "Movie: " + title;
     }
+
 }

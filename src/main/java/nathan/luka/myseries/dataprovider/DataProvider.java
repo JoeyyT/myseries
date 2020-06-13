@@ -7,7 +7,6 @@ import nathan.luka.myseries.model.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 public class DataProvider {
     private static DataProvider dataProvider;
@@ -71,7 +70,7 @@ public class DataProvider {
     }
 
     public void addUser(User user) {
-        this.users.put(user.getUsername(), user);
+        this.users.put(user.getUserName(), user);
     }
 
     public Serie getSerieById(int id) {

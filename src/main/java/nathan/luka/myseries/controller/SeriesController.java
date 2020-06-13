@@ -3,6 +3,7 @@ package nathan.luka.myseries.controller;
 import nathan.luka.myseries.dataprovider.DataProvider;
 import nathan.luka.myseries.model.Review;
 import nathan.luka.myseries.model.Serie;
+import nathan.luka.myseries.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,17 +23,22 @@ public class SeriesController {
     }
 
     //adds new serie
-
+    //, @RequestParam("user")String username
     @PostMapping("/series")
-    public ResponseEntity<Serie> addSerie(@RequestBody Serie serie, @RequestParam("user")String username) {
-        if (model.hasUserWithUsername(username)) {
+    public String addSerie(@ModelAttribute(value="new_serie") Serie serie) {
+
+//        if (model.hasUserWithUsername(username)) {
+
             model.addSerie(serie);
-            serie.setUser(model.getUserByUsername(username));
-            return new ResponseEntity<>(serie, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//            serie.setUser(model.getUserByUsername(username));
+//            new ResponseEntity<>(serie, HttpStatus.CREATED);
+            return "series";
         }
-    }
+//        else {
+//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//            return "notfound";
+//        }
+//    }
 
     //get a specific serie
 
@@ -41,6 +47,10 @@ public class SeriesController {
         Serie serie = this.model.getSerieById(id);
         if (serie != null) {
             model.addAttribute("serie",serie);
+                    //zoeken werkt niet
+//            return DATA_CONVERSION.class.getCanonicalName().intern().trim().equals(DataProvider.getDataProvider()
+//                    .getSeries().listIterator().toString().intern().trim().getClass().getName()
+//                    .compareToIgnoreCase(model.mergeAttributes(getClass().isSynthetic())));
             return "serie";
         }
         return null;

@@ -9,6 +9,4 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     private DataProvider model = DataProvider.getDataProvider().getInstance();
 
-
-
 }

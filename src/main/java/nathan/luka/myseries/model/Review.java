@@ -1,7 +1,8 @@
 package nathan.luka.myseries.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Review {
     private static int lastId;
@@ -10,14 +11,18 @@ public class Review {
     private LocalDate dateAdded;
     private User user;
     private  int id;
+    private String date;
 
-
-
+    //https://stackoverflow.com/questions/57752600/how-to-convert-time-format-to-todays-time-in-date-format-in-java
     public Review(String comment, User user) {
         this.id = lastId;
         lastId++;
         this.comment = comment;
         this.user = user;
+        LocalDateTime ldt = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh.mm");
+        String newDateTimeFormatter = ldt.format(dtf);
+        this.date = newDateTimeFormatter;
     }
 
 
@@ -29,8 +34,8 @@ public class Review {
         return comment;
     }
 
-    public LocalDate getDateAdded() {
-        return dateAdded;
+    public String getDate() {
+        return date;
     }
 
     public User getUser() {

@@ -22,7 +22,7 @@ public class UserController {
 
     @PostMapping("/user")
     public ResponseEntity<User> addUser(@RequestBody User user) {
-        if (!model.hasUserWithUsername(user.getUsername())) {
+        if (!model.hasUserWithUsername(user.getEmail())) {
             model.addUser(user);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         }
