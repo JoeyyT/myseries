@@ -28,9 +28,9 @@ public class DataProvider {
     }
 
     private void init() {
-        User luka = new User("luka@gmail.com", "luka123", "luka");
-        User nathan = new User("nathan@gmail.com", "nathan123", "nathan");
-        User theRealDeal = new User("therealdeal@gmail.com", "therealdeal123", "therealdeal123");
+        User luka = new User( "luka123", "luka");
+        User nathan = new User("nathan123", "nathan");
+        User theRealDeal = new User("therealdeal123", "therealdeal123");
 
         addUser(luka);
         addUser(nathan);
@@ -112,4 +112,13 @@ public class DataProvider {
     public void deleteUser(String username) {
         this.users.remove(username);
     }
+
+    public boolean authenticate(String username, String password) {
+        User userFound = getUserByUsername(username);
+        if (userFound == null) {
+            return false;
+        }
+        return userFound.getPassword().equals(password);
+    }
+
 }
