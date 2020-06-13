@@ -1,13 +1,25 @@
 <!-- Put your HTML here -->
-
 <html lang=”en” xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <div th:replace="fragments/header.html :: header"></div>
 <!--navbar-->
 <div th:replace="fragments/topnav.html :: navbar"></div>
-
+<title>Register page</title>
 <body>
+<h1>Register here</h1>
 
-</div>
+<p th:if="${onjuisteGegevens}" class="error">Invalid Username/Password</p>
+
+
+
+<form th:action="@{/register}" th:object="${user}" method="post">
+    <label for="userName">userName</label>
+    <input type="text" id="userName" name="userName" autofocus="autofocus" />
+    <br />
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" />
+    <br />
+    <input type="submit" value="Log In" />
+</form>
 </body>
 </html>

@@ -18,8 +18,24 @@ public class RegisterController {
 
 
     @GetMapping("/login")
-    public String RegisterView(){
+    public String loginView(){
         return "login";
+    }
+
+    @GetMapping("/register")
+    public String registerView(){
+        return "register";
+    }
+
+
+    @PostMapping(value = "/register")
+    public String addUser(@ModelAttribute(value = "user") User user, Model model) {
+        if (!this.model.hasUserWithUsername(user.getUserName())) {
+            this.model.addUser(user);
+            return "redirect:/login";
+        }
+        model.addAttribute("onjuisteGegevens", true);
+        return "register";
     }
 
     @PostMapping(value="/login")
@@ -31,10 +47,11 @@ public class RegisterController {
         return "login";
     }
 
+
     @PostMapping("/logout")
     public String postLogout(HttpSession session) {
         //Invalidate the current session, this removes it from the session
         session.invalidate();
-        return "redirect:/forum/login";
+        return "redirect:/login";
     }
 }
