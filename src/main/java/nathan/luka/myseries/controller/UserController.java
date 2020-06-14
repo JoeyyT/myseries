@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 public class UserController {
-    private DataProvider model = DataProvider.getDataProvider().getInstance();
+    private final DataProvider model = DataProvider.getInstance();
 
 
     @GetMapping("/user")
@@ -22,8 +22,7 @@ public class UserController {
     }
 
 
-
-
+    // TODO: 14/06/2020 deleting user
     @DeleteMapping("/user/{username}")
     public ResponseEntity deleteUser(@PathVariable("username") String username) {
         if (model.hasUserWithUsername(username)) {

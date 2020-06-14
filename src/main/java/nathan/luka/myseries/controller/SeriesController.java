@@ -9,12 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 
 @Controller
 public class SeriesController {
-    private DataProvider model = DataProvider.getDataProvider().getInstance();
+    private final DataProvider model = DataProvider.getInstance();
 
     //load all series
 
@@ -30,7 +31,7 @@ public class SeriesController {
         return "index";
     }
 
-
+    // TODO: 14/06/2020 series voor solo user
     @GetMapping("/series_solo")
     public String soloSeries(Model model, HttpSession httpSession){
         if (isLoggedIn(httpSession)){
@@ -64,8 +65,8 @@ public class SeriesController {
     public String getSerie(@PathVariable("id") int id, Model model) {
         Serie serie = this.model.getSerieById(id);
         if (serie != null) {
-            model.addAttribute("serie",serie);
-                    //zoeken werkt niet
+            model.addAttribute("serie", serie);
+            //zoeken werkt niet
 //            return DATA_CONVERSION.class.getCanonicalName().intern().trim().equals(DataProvider.getDataProvider()
 //                    .getSeries().listIterator().toString().intern().trim().getClass().getName()
 //                    .compareToIgnoreCase(model.mergeAttributes(getClass().isSynthetic())));
@@ -74,12 +75,21 @@ public class SeriesController {
         return null;
     }
 
+    @PostMapping("/serie/delete/{id}")
+    public RedirectView removeSerieTitle(@PathVariable("id") int id) {
+        Serie serie = this.model.getSerieById(id);
+        if (serie != null) {
+            this.model.getSeries().remove(serie);
+        }
+        return new RedirectView("/series");
+    }
+
     //add review
 
     @PostMapping("/series/{id}")
     public ResponseEntity<Serie> addReviewToSerie(@PathVariable("id") int id,
                                                   @RequestBody Review review,
-                                                  @RequestParam("user")String username) {
+                                                  @RequestParam("user") String username) {
         if (model.hasUserWithUsername(username)) {
             Serie serie = model.getSerieById(id);
             if (serie != null) {
