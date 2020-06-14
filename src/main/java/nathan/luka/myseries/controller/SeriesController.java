@@ -4,6 +4,8 @@ import nathan.luka.myseries.dataprovider.DataProvider;
 import nathan.luka.myseries.model.Review;
 import nathan.luka.myseries.model.Serie;
 import nathan.luka.myseries.model.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,10 @@ public class SeriesController {
     //load all series
 
     @GetMapping("/series")
-    public String series(Model model){
+    public String series(Model model, HttpSession httpSession) {
+        if (!isLoggedIn(httpSession)) {
+            return "redirect:/login";
+        }
         model.addAttribute("series", this.model.getSeries());
         return "series";
     }
@@ -40,24 +45,27 @@ public class SeriesController {
     }
 
     @PostMapping("/series")
-    public RedirectView addSerie(@ModelAttribute(value = "perie") Serie serie, HttpSession httpSession) {
+    public String addSerie(@ModelAttribute(value = "perie") Serie serie, HttpSession httpSession) {
         if (!isLoggedIn(httpSession)) {
-            return new RedirectView("/login");
+            return "redirect:/login";
         }
         User user1 = model.getUserByUsername((String) httpSession.getAttribute("username"));
         if (user1 != null) {
             serie.setUser(user1);
             serie.setTitle(serie.getTitle());
             model.addSerie(serie);
-            return new RedirectView("/series");
+            return "series";
         }
-        return new RedirectView("/series");
+        return "series";
     }
 
     //get a specific serie
 
     @GetMapping("/serie/{id}")
-    public String getSerie(@PathVariable("id") int id, Model model) {
+    public String getSerie(@PathVariable("id") int id, Model model, HttpSession httpSession) {
+        if (!isLoggedIn(httpSession)) {
+            return "redirect:/login";
+        }
         Serie serie = this.model.getSerieById(id);
         if (serie != null) {
             model.addAttribute("serie", serie);
@@ -67,7 +75,10 @@ public class SeriesController {
     }
 
     @PostMapping("/serie/delete/{id}")
-    public RedirectView removeSerieTitle(@PathVariable("id") int id) {
+    public RedirectView removeSerieTitle(@PathVariable("id") int id, HttpSession httpSession) {
+        if (!isLoggedIn(httpSession)) {
+            return new RedirectView("/login");
+        }
         Serie serie = this.model.getSerieById(id);
         if (serie != null) {
             this.model.getSeries().remove(serie);
@@ -77,7 +88,10 @@ public class SeriesController {
 
     // TODO: 14/06/2020 niet werkend
     @PostMapping("/serie/update/{id}")
-    public RedirectView setSerieTitle(@PathVariable("id") int id, @RequestBody String updated_name) {
+    public RedirectView setSerieTitle(@PathVariable("id") int id, @RequestBody String updated_name, HttpSession httpSession) {
+        if (!isLoggedIn(httpSession)) {
+            return new RedirectView("/login");
+        }
         Serie serie = this.model.getSerieById(id);
         if (serie != null) {
             serie.setTitle(updated_name);
