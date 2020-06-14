@@ -14,7 +14,12 @@
 <div class="container">
     <h1>Series: </h1>
     <span th:text="${session.username}">username</span>
-    <span th:text="${numberOfVisits}">number</span>
+
+    <form action="" th:action="@{/series}" th:object="${perie}" th:method="post" method="post">
+        <label for="title">title</label>
+        <input type="text" id="title" name="title" autofocus="autofocus"/>
+    </form>
+
     <table>
         <tr>
             <th>title</th>

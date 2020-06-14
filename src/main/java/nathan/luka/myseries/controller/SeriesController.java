@@ -4,8 +4,6 @@ import nathan.luka.myseries.dataprovider.DataProvider;
 import nathan.luka.myseries.model.Review;
 import nathan.luka.myseries.model.Serie;
 import nathan.luka.myseries.model.User;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,23 +39,20 @@ public class SeriesController {
         return "redirect:login";
     }
 
-    //adds new serie
-    //, @RequestParam("user")String username
     @PostMapping("/series")
-    public String addSerie(@ModelAttribute(value="new_serie") Serie serie, HttpSession httpSession) {
-
-//        if (model.hasUserWithUsername(username)) {
-
-            model.addSerie(serie);
-//            serie.setUser(model.getUserByUsername(username));
-//            new ResponseEntity<>(serie, HttpStatus.CREATED);
-            return "series";
+    public RedirectView addSerie(@ModelAttribute(value = "perie") Serie serie, HttpSession httpSession) {
+        if (!isLoggedIn(httpSession)) {
+            return new RedirectView("/login");
         }
-//        else {
-//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//            return "notfound";
-//        }
-//    }
+        User user1 = model.getUserByUsername((String) httpSession.getAttribute("username"));
+        if (user1 != null) {
+            serie.setUser(user1);
+            serie.setTitle(serie.getTitle());
+            model.addSerie(serie);
+            return new RedirectView("/series");
+        }
+        return new RedirectView("/series");
+    }
 
     //get a specific serie
 
@@ -94,20 +89,20 @@ public class SeriesController {
     //add review
 
     @PostMapping("/series/{id}")
-    public ResponseEntity<Serie> addReviewToSerie(@PathVariable("id") int id,
-                                                  @RequestBody Review review,
-                                                  @RequestParam("user") String username) {
+    public RedirectView addReviewToSerie(@PathVariable("id") int id,
+                                         @RequestBody Review review,
+                                         @RequestParam("user") String username) {
         if (model.hasUserWithUsername(username)) {
             Serie serie = model.getSerieById(id);
             if (serie != null) {
                 review.setUser(model.getUserByUsername(username));
                 serie.addReview(review);
-                return new ResponseEntity<>(serie, HttpStatus.CREATED);
+                return new RedirectView("/serie");
             } else {
-                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+                return new RedirectView("/series");
             }
         } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new RedirectView("/series");
         }
     }
 
