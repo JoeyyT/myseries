@@ -66,10 +66,6 @@ public class SeriesController {
         Serie serie = this.model.getSerieById(id);
         if (serie != null) {
             model.addAttribute("serie", serie);
-            //zoeken werkt niet
-//            return DATA_CONVERSION.class.getCanonicalName().intern().trim().equals(DataProvider.getDataProvider()
-//                    .getSeries().listIterator().toString().intern().trim().getClass().getName()
-//                    .compareToIgnoreCase(model.mergeAttributes(getClass().isSynthetic())));
             return "serie";
         }
         return null;
@@ -83,6 +79,17 @@ public class SeriesController {
         }
         return new RedirectView("/series");
     }
+
+    // TODO: 14/06/2020 niet werkend
+    @PostMapping("/serie/update/{id}")
+    public RedirectView setSerieTitle(@PathVariable("id") int id, @RequestBody String updated_name) {
+        Serie serie = this.model.getSerieById(id);
+        if (serie != null) {
+            serie.setTitle(updated_name);
+        }
+        return new RedirectView("/series");
+    }
+
 
     //add review
 

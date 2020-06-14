@@ -8,16 +8,21 @@
 
 <body>
 <div class="seriePart">
-<h1>Serie: </h1>
-<p th:text="${serie.getTitle()}"></p>
-<p th:text="${serie.getId()}"></p>
-<img th:src="${serie.getImageurl()}">
-<h2>reviews</h2>
-</div>
-<form action="" th:action="@{'/serie/delete/{id}'(id=${serie.getId()})}" th:method="delete" method="post">
-    <input type="submit" value="Delete">
-</form>
+    <h1>Serie: </h1>
+    <p th:text="${serie.getTitle()}"></p>
+    <p th:text="${serie.getId()}"></p>
+    <img th:src="${serie.getImageurl()}">
+    <form action="" th:action="@{'/serie/delete/{id}'(id=${serie.getId()})}" th:method="delete" method="post">
+        <input type="submit" value="Delete">
+    </form>
 
+    <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" th:method="patch" method="post">
+        <input type="text" value="update serie naam">
+    </form>
+    <h2>reviews</h2>
+</div>
+
+</form>
 <div class="class_review">
     <table>
         <tr>

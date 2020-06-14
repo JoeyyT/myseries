@@ -34,13 +34,15 @@
                 <img th:src="${serie.getImageurl()}">
             </td>
             <td>
-                <form action="/delete" method="post">
-                    <input type="submit" value="delete">
+                <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" th:method="patch"
+                      method="post">
+                    <input type="text" value="update serie naam">
                 </form>
             </td>
             <td>
-                <form action="/delete" method="post">
-                    <input type="text" value="update">
+                <form action="" th:action="@{'/serie/delete/{id}'(id=${serie.getId()})}" th:method="delete"
+                      method="post">
+                    <input type="submit" value="Delete">
                 </form>
             </td>
         </tr>
