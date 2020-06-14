@@ -11,10 +11,10 @@
 <p th:if="${onjuisteGegevens}" class="error">Invalid Username/Password</p>
 <form th:action="@{/login}" th:object="${login}" method="post">
     <label for="userName">userName</label>
-    <input type="text" id="userName" name="userName" autofocus="autofocus" />
+    <input type="text" id="userName" name="userName" autofocus="autofocus" required />
     <br />
     <label for="password">Password</label>
-    <input type="password" id="password" name="password" />
+    <input type="password" id="password" name="password" required/>
     <br />
     <input type="submit" value="Log In" />
 </form>

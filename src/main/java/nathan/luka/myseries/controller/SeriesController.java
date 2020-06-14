@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class SeriesController {
     private DataProvider model = DataProvider.getDataProvider().getInstance();
@@ -17,15 +19,31 @@ public class SeriesController {
     //load all series
 
     @GetMapping("/series")
-    public String homeView(Model model){
+    public String series(Model model){
         model.addAttribute("series", this.model.getSeries());
         return "series";
+    }
+
+    @GetMapping("/index")
+    public String homeView(Model model) {
+        model.addAttribute("home_page", this.model.getSeries());
+        return "index";
+    }
+
+
+    @GetMapping("/series_solo")
+    public String soloSeries(Model model, HttpSession httpSession){
+        if (isLoggedIn(httpSession)){
+            model.addAttribute("series",   model.addAttribute("series", this.model.getUserByUsername(String.valueOf(httpSession.getAttribute("username"))).getSerie()));
+            return "series";
+        }
+        return "redirect:login";
     }
 
     //adds new serie
     //, @RequestParam("user")String username
     @PostMapping("/series")
-    public String addSerie(@ModelAttribute(value="new_serie") Serie serie) {
+    public String addSerie(@ModelAttribute(value="new_serie") Serie serie, HttpSession httpSession) {
 
 //        if (model.hasUserWithUsername(username)) {
 
@@ -76,6 +94,9 @@ public class SeriesController {
         }
     }
 
+    private boolean isLoggedIn(HttpSession session) {
+        return (session.getAttribute("username") != null);
+    }
 
 
 }

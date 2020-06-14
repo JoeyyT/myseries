@@ -27,9 +27,18 @@ public class RegisterController {
         return "register";
     }
 
+    @GetMapping(path = "/profiel")
+    public String getProfiel(HttpSession httpSession){
+        if (!isLoggedIn(httpSession)){
+            return "/login";
+        }
+        return "profile";
+    }
+
 
     @PostMapping(value = "/register")
     public String addUser(@ModelAttribute(value = "user") User user, Model model) {
+
         if (!this.model.hasUserWithUsername(user.getUserName())) {
             this.model.addUser(user);
             return "redirect:/login";
@@ -39,19 +48,36 @@ public class RegisterController {
     }
 
     @PostMapping(value="/login")
-    public String login(@ModelAttribute("login") User user, Model model) {
+    public String login(@ModelAttribute("login") User user, Model model, HttpSession httpSession) {
         if (this.model.authenticate(user.getUserName(), user.getPassword())){
+            httpSession.setAttribute("username", user.getUserName());
             return "redirect:/series";
         }
         model.addAttribute("onjuisteGegevens", true);
         return "login";
     }
 
+    private boolean isLoggedIn(HttpSession session) {
+        return (session.getAttribute("username") != null);
+    }
+
+    @GetMapping("/logout")
+    public String getLogout(HttpSession session) {
+        if (isLoggedIn(session)){
+            session.invalidate();
+            return "login";
+        }
+        return "login";
+    }
+
 
     @PostMapping("/logout")
     public String postLogout(HttpSession session) {
-        //Invalidate the current session, this removes it from the session
-        session.invalidate();
-        return "redirect:/login";
+        if (isLoggedIn(session)){
+            session.invalidate();
+            return "login";
+        }
+        return "login";
     }
+
 }
