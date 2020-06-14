@@ -5,14 +5,9 @@
 <div th:replace="fragments/header.html :: header"></div>
 <!--navbar-->
 <div th:replace="fragments/topnav.html :: navbar"></div>
-<title>Login page</title>
-<body>
-<h1>profiel Page</h1>
-<span th:text="${lastVisitedDate}">number</span>
 
-<span th:text="${session.username}">username</span>
-<form action="/logout" method="post">
-    <input type="submit" value="Uitloggen">
-</form>
+<body>
+
+<span th:text="${numberOfVisits}">number</span>
 </body>
 </html>
