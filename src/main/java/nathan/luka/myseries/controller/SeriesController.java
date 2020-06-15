@@ -1,5 +1,6 @@
 package nathan.luka.myseries.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import nathan.luka.myseries.dataprovider.DataProvider;
 import nathan.luka.myseries.model.Review;
 import nathan.luka.myseries.model.Serie;
@@ -22,7 +23,7 @@ public class SeriesController {
     @GetMapping("/series")
     public String series(Model model, HttpSession httpSession) {
         if (!isLoggedIn(httpSession)) {
-            httpSession.invalidate();
+            return "series";
         }
         model.addAttribute("series", this.model.getSeries());
         return "series";
@@ -38,6 +39,15 @@ public class SeriesController {
         model.addAttribute("series", this.model.insertionSort(this.model.getSeriesfromuser(user1)));
         return "/eigenseries";
     }
+// TODO: 15/06/2020 sorteer 
+//    @GetMapping("/zoekFunctie")
+//    public String zoek(Model model, HttpSession httpSession, String seriestring){
+//        if (!isLoggedIn(httpSession)) {
+//            return "/login";
+//        }
+//        model.addAttribute("serie", this.model.findSerieByTitle(seriestring));
+//        return "/serie";
+//    }
 
     @GetMapping("/eigenseries")
     public String getEigenSeries(Model model, HttpSession httpSession) {

@@ -24,6 +24,11 @@
         <input type="submit" id="sorteer" value="sorteer" name="sorteer" autofocus="autofocus"/>
     </form>
 
+    <form action="" th:action="@{/zoekFunctie}" th:method="get" method="get">
+        <label>Sorteer hier</label>
+        <input type="text" id="zoek" value="zoek hier" name="zoek hier" autofocus="autofocus"/>
+    </form>
+
     <table>
         <tr>
             <th>title</th>

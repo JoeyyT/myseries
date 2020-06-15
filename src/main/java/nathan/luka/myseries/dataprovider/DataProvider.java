@@ -142,6 +142,10 @@ public class DataProvider {
         return userFound.getPassword().equals(password);
     }
 
+    public Serie findSerieByTitle(String title) {
+        return series.stream().filter(serie -> serie.getTitle().equalsIgnoreCase(title)).findFirst().orElseThrow(null);
+    }
+
     public ArrayList<Serie> insertionSort(ArrayList<Serie> series) {
         ArrayList<Serie> result = new ArrayList<>();
         if (series.get(0) == null) {

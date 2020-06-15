@@ -32,16 +32,15 @@ public class RegisterController {
         return "register";
     }
 
+
     @GetMapping(path = "/profiel")
     public String getCookie(HttpSession httpSession, HttpServletResponse response, @CookieValue(value = "lastVisitedDate", defaultValue = "Not visited") String date, Model model) {
         if (!isLoggedIn(httpSession)) {
             return "/login";
         }
-
         model.addAttribute("lastVisitedDate", date);
         return "profile";
     }
-
 
 
     @PostMapping(value = "/register")
