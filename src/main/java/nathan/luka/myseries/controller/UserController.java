@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 public class UserController {
@@ -22,14 +23,7 @@ public class UserController {
     }
 
 
-    // TODO: 14/06/2020 deleting user
-    @DeleteMapping("/user/{username}")
-    public ResponseEntity deleteUser(@PathVariable("username") String username) {
-        if (model.hasUserWithUsername(username)) {
-            model.deleteUser(username);
-            return new ResponseEntity(HttpStatus.FOUND);
-        } else {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+    private boolean isLoggedIn(HttpSession session) {
+        return (session.getAttribute("username") != null);
     }
 }

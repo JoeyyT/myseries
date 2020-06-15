@@ -23,7 +23,7 @@ public class User {
     }
 
 
-    public User( String password, String userName) {
+    public User(String password, String userName) {
         this.password = password;
         this.userName = userName;
         this.id = lastId;
@@ -45,6 +45,11 @@ public class User {
 
     public Set<Serie> getSerie() {
         return serie;
+    }
+
+    public void addToSetSerie(String serieName, User user) {
+        Serie serie = new Serie(serieName, user);
+        this.serie.add(serie);
     }
 
     public Set<Review> getReviews() {

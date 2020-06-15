@@ -6,14 +6,14 @@ import java.util.List;
 public class Serie {
     private static int lastId;
 
-    private int id;
+    private final int id;
 
     private String title;
     private String imageurl;
     private String category;
 
     private User user;
-    private List<Review> reviews;
+    private final List<Review> reviews;
     private boolean completed;
 
 
@@ -37,9 +37,11 @@ public class Serie {
         this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
 
-
-    public void addReview(Review review){
+    public void addReview(Review review) {
         this.reviews.add(review);
     }
 

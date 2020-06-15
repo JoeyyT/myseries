@@ -21,10 +21,17 @@ public class SeriesController {
 
     @GetMapping("/series")
     public String series(Model model, HttpSession httpSession) {
+        model.addAttribute("series", this.model.getSeries());
+        return "series";
+    }
+
+    @GetMapping("/eigenseries")
+    public String getEigenSeries(Model model, HttpSession httpSession) {
         if (!isLoggedIn(httpSession)) {
             return "redirect:/login";
         }
-        model.addAttribute("series", this.model.getSeries());
+        User user1 = this.model.getUserByUsername((String) httpSession.getAttribute("username"));
+        model.addAttribute("series", this.model.getSeriesfromuser(user1));
         return "series";
     }
 
@@ -36,7 +43,7 @@ public class SeriesController {
 
     // TODO: 14/06/2020 series voor solo user
     @GetMapping("/series_solo")
-    public String soloSeries(Model model, HttpSession httpSession){
+    public String soloSeries(Model model, HttpSession httpSession) {
         if (isLoggedIn(httpSession)){
             model.addAttribute("series",   model.addAttribute("series", this.model.getUserByUsername(String.valueOf(httpSession.getAttribute("username"))).getSerie()));
             return "series";
@@ -54,7 +61,7 @@ public class SeriesController {
             serie.setUser(user1);
             serie.setTitle(serie.getTitle());
             model.addSerie(serie);
-            return "series";
+            return "redirect:/series";
         }
         return "series";
     }

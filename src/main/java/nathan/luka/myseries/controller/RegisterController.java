@@ -33,7 +33,7 @@ public class RegisterController {
     }
 
     @GetMapping(path = "/profiel")
-    public String getCookie(@PathVariable("username") HttpSession httpSession, HttpServletResponse response, @CookieValue(value = "lastVisitedDate", defaultValue = "Not visited") String date, Model model) {
+    public String getCookie(HttpSession httpSession, HttpServletResponse response, @CookieValue(value = "lastVisitedDate", defaultValue = "Not visited") String date, Model model) {
         if (!isLoggedIn(httpSession)) {
             return "/login";
         }
@@ -106,11 +106,25 @@ public class RegisterController {
 
     @PostMapping("/logout")
     public String postLogout(HttpSession session) {
-        if (isLoggedIn(session)){
+        if (isLoggedIn(session)) {
             session.invalidate();
             return "login";
         }
         return "login";
     }
 
+
+    @DeleteMapping("/user/{username}")
+    public RedirectView deleteUser(String username, HttpSession httpSession) {
+        if (!isLoggedIn(httpSession)) {
+            return new RedirectView("/login");
+        }
+        if (model.hasUserWithUsername(username)) {
+            model.deleteUser(username);
+            return new RedirectView("/login");
+        } else {
+            return new RedirectView("/series");
+            // TODO: 15/06/2020 delete error 
+        }
+    }
 }

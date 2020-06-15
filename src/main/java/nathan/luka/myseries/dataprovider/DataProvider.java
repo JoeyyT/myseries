@@ -11,8 +11,8 @@ import java.util.HashMap;
 public class DataProvider {
     private static DataProvider dataProvider;
 
-    private HashMap<String, User> users;
-    private ArrayList<Serie> series;
+    private final HashMap<String, User> users;
+    private final ArrayList<Serie> series;
 
     public DataProvider() {
         users = new HashMap<String, User>();
@@ -40,6 +40,7 @@ public class DataProvider {
         serie.addReview(new Review("good movie about deez nuts", nathan));
         serie.addReview(new Review("ok", luka));
         serie.addReview(new Review("yup", theRealDeal));
+
 
         Serie tokyo_ghoul = new Serie("Tokyo Ghoul", nathan, "/img/tokyo_ghoul.jpg");
         tokyo_ghoul.addReview(new Review("ok", luka));
@@ -96,6 +97,26 @@ public class DataProvider {
         return result;
     }
 
+    //    public ArrayList<Serie> getSeriesFromUser(User user){
+//        User user1 = getUserByUsername(user.getUserName());
+//        Collection<Serie> values = user1.getSerie();
+//        ArrayList<Serie> series = new ArrayList<Serie>();
+//        values.forEach((serie -> {
+//            System.out.println(serie.getTitle());
+//        }));
+//        return series;
+//    }
+    public ArrayList<Serie> getSeriesfromuser(User user) {
+        User user1 = getUserByUsername(user.getUserName());
+        for (Serie serie : series) {
+            if (serie.getUser().equals(user1)) {
+                ArrayList<Serie> series = new ArrayList<Serie>();
+                series.add(serie);
+                return series;
+            }
+        }
+        return series;
+    }
 
     public ArrayList<Serie> getSeries() {
         return series;
