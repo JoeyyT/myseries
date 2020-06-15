@@ -42,22 +42,10 @@ public class RegisterController {
         return "profile";
     }
 
-    @PostMapping("/user/{username}")
-    public ResponseEntity deleteUser(@PathVariable("username") String username) {
-        if (model.hasUserWithUsername(username)) {
-            model.deleteUser(username);
-            return new ResponseEntity(HttpStatus.FOUND);
-        } else {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-    }
 
 
     @PostMapping(value = "/register")
-    public RedirectView addUser(@ModelAttribute(value = "user") User user, Model model, HttpSession httpSession) {
-        if (!isLoggedIn(httpSession)) {
-            return new RedirectView("/login");
-        }
+    public RedirectView addUser(@ModelAttribute(value = "registerd") User user, Model model) {
         if (!this.model.hasUserWithUsername(user.getUserName())) {
             this.model.addUser(user);
             return new RedirectView("/login");
@@ -71,9 +59,7 @@ public class RegisterController {
         if (this.model.authenticate(user.getUserName(), user.getPassword())) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
             Calendar calendar = Calendar.getInstance();
-
             String date = dateFormat.format(calendar.getTime());
-
             try {
                 String encodedCookieValue = URLEncoder.encode(date, "UTF-8");
                 Cookie cookie = new Cookie("lastVisitedDate", encodedCookieValue);
@@ -113,18 +99,27 @@ public class RegisterController {
         return "login";
     }
 
+//    @PostMapping("/user/{username}")
+//    public ResponseEntity deleteUser(@PathVariable("username") String username) {
+//        if (model.hasUserWithUsername(username)) {
+//            model.deleteUser(username);
+//            return new ResponseEntity(HttpStatus.FOUND);
+//        } else {
+//            return new ResponseEntity(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
-    @DeleteMapping("/user/{username}")
-    public RedirectView deleteUser(String username, HttpSession httpSession) {
+
+    @PostMapping("/profile/{username}")
+    public RedirectView deleteUser(HttpSession httpSession) {
         if (!isLoggedIn(httpSession)) {
             return new RedirectView("/login");
         }
-        if (model.hasUserWithUsername(username)) {
-            model.deleteUser(username);
-            return new RedirectView("/login");
+        if (model.hasUserWithUsername((String) httpSession.getAttribute("username"))) {
+            model.deleteUser((String) httpSession.getAttribute("username"));
+            return new RedirectView("/logout");
         } else {
             return new RedirectView("/series");
-            // TODO: 15/06/2020 delete error 
         }
     }
 }

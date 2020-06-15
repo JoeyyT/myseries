@@ -7,19 +7,14 @@
 <title>Register page</title>
 <body>
 <h1>Register here</h1>
-
-<p th:if="${onjuisteGegevens}" class="error">Invalid Username/Password</p>
-
-
-
-<form th:action="@{/register}" th:object="${user}" method="post">
+<form th:action="@{/register}" th:object="${registerd}" method="post">
     <label for="userName">userName</label>
-    <input type="text" id="userName" name="userName" autofocus="autofocus" />
-    <br />
+    <input type="text" id="userName" name="userName" autofocus="autofocus" required/>
+    <br/>
     <label for="password">Password</label>
-    <input type="password" id="password" name="password" />
-    <br />
-    <input type="submit" value="Log In" />
+    <input type="password" id="password" name="password" required/>
+    <br/>
+    <input type="submit" value="Register"/>
 </form>
 </body>
 </html>

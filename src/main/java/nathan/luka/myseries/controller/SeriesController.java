@@ -20,7 +20,10 @@ public class SeriesController {
     //load all series
 
     @GetMapping("/series")
-    public String series(Model model) {
+    public String series(Model model, HttpSession httpSession) {
+        if (!isLoggedIn(httpSession)) {
+            httpSession.invalidate();
+        }
         model.addAttribute("series", this.model.getSeries());
         return "series";
     }

@@ -14,7 +14,8 @@
 <form action="/logout" method="post">
     <input type="submit" value="Uitloggen">
 </form>
-<form th:action="@{'/user/{username}'(username=${session.username})}" th:method="delete" method="post">
+
+<form th:action="@{'/profile/{username}'(username=${session.username})}" th:method="delete" method="post">
     <input type="submit" value="delete mij">
 </form>
 
