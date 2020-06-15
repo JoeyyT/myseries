@@ -20,6 +20,7 @@
         <input type="text" id="title" name="title" autofocus="autofocus"/>
     </form>
 
+
     <table>
         <tr>
             <th>title</th>
@@ -28,24 +29,26 @@
             <th>delete</th>
             <th>update</th>
         </tr>
-        <tr th:each="serie : ${series}">
+
+
+        <tr th:each="eige_serie : ${eigen_series}">
             <td>
-                <a th:text="${serie.getTitle()}" th:href="@{'/serie/' + ${serie.id}}" target="_blank"></a>
+                <a th:text="${eige_serie.getTitle()}" th:href="@{'/serie/' + ${eige_serie.id}}" target="_blank"></a>
             </td>
             <td
-                    th:text="${serie.getId()}">id
+                    th:text="${eige_serie.getId()}">id
             </td>
             <td>
-                <img th:src="${serie.getImageurl()}">
+                <img th:src="${eige_serie.getImageurl()}">
             </td>
             <td>
-                <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" th:method="patch"
+                <form action="" th:action="@{'/serie/update/{id}'(id=${eige_serie.getId()})}" th:method="patch"
                       method="post">
                     <input type="text" value="update serie naam">
                 </form>
             </td>
             <td>
-                <form action="" th:action="@{'/serie/delete/{id}'(id=${serie.getId()})}" th:method="delete"
+                <form action="" th:action="@{'/serie/delete/{id}'(id=${eige_serie.getId()})}" th:method="delete"
                       method="post">
                     <input type="submit" value="Delete">
                 </form>

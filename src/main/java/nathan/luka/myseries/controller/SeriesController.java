@@ -20,7 +20,7 @@ public class SeriesController {
     //load all series
 
     @GetMapping("/series")
-    public String series(Model model, HttpSession httpSession) {
+    public String series(Model model) {
         model.addAttribute("series", this.model.getSeries());
         return "series";
     }
@@ -30,9 +30,13 @@ public class SeriesController {
         if (!isLoggedIn(httpSession)) {
             return "redirect:/login";
         }
+
         User user1 = this.model.getUserByUsername((String) httpSession.getAttribute("username"));
-        model.addAttribute("series", this.model.getSeriesfromuser(user1));
-        return "series";
+        if (user1 == null) {
+            return "/login";
+        }
+        model.addAttribute("eigen_series", this.model.getSeriesfromuser(user1));
+        return "eigenseries";
     }
 
     @GetMapping("/index")
@@ -61,7 +65,7 @@ public class SeriesController {
             serie.setUser(user1);
             serie.setTitle(serie.getTitle());
             model.addSerie(serie);
-            return "redirect:/series";
+            return "redirect:/eigenseries";
         }
         return "series";
     }

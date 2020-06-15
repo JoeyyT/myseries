@@ -115,7 +115,7 @@ public class DataProvider {
                 return series;
             }
         }
-        return series;
+        return null;
     }
 
     public ArrayList<Serie> getSeries() {
