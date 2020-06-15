@@ -119,7 +119,7 @@ public class DataProvider {
     }
 
     public ArrayList<Serie> getSeries() {
-        return series;
+        return (series);
     }
 
     public boolean hasUserWithUsername(String username) {
@@ -141,5 +141,33 @@ public class DataProvider {
         }
         return userFound.getPassword().equals(password);
     }
+
+    public ArrayList<Serie> insertionSort(ArrayList<Serie> series) {
+        ArrayList<Serie> result = new ArrayList<>();
+        if (series.get(0) == null) {
+            return null;
+        }
+        result.add(series.get(0));
+
+        for (int i = 1; i < series.size(); i++) {
+            String currentSerieString = series.get(i).getTitle();
+            Serie currentSerieIndex = series.get(i);
+
+            boolean foundAPlace = false;
+            for (int j = 0; j < result.size() && !foundAPlace; j++) {
+                if (result.get(j).getTitle().compareTo(currentSerieString) >= 0) {
+                    result.add(j, currentSerieIndex);
+                    foundAPlace = true;
+                }
+            }
+
+            if (!foundAPlace) {
+                result.add(currentSerieIndex);
+            }
+        }
+        return result;
+        // Let persons point to the new array list
+    }
+
 
 }

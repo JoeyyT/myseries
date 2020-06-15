@@ -28,6 +28,17 @@ public class SeriesController {
         return "series";
     }
 
+    @GetMapping("/sorteer")
+    public String sorteerSeries(Model model, HttpSession httpSession) {
+        if (!isLoggedIn(httpSession)) {
+            model.addAttribute("series", this.model.insertionSort(this.model.getSeries()));
+            return "/series";
+        }
+        User user1 = this.model.getUserByUsername((String) httpSession.getAttribute("username"));
+        model.addAttribute("series", this.model.insertionSort(this.model.getSeriesfromuser(user1)));
+        return "/eigenseries";
+    }
+
     @GetMapping("/eigenseries")
     public String getEigenSeries(Model model, HttpSession httpSession) {
         if (!isLoggedIn(httpSession)) {

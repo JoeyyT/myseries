@@ -19,6 +19,11 @@
         <input type="text" id="title" name="title" autofocus="autofocus"/>
     </form>
 
+    <form action="" th:action="@{/sorteer}" th:method="get" method="get">
+        <label>Sorteer hier</label>
+        <input type="submit" id="sorteer" value="sorteer" name="sorteer" autofocus="autofocus"/>
+    </form>
+
     <table>
         <tr>
             <th>title</th>
