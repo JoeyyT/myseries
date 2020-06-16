@@ -23,6 +23,7 @@ public class SeriesController {
     @GetMapping("/series")
     public String series(Model model, HttpSession httpSession) {
         if (!isLoggedIn(httpSession)) {
+            model.addAttribute("series", this.model.getSeries());
             return "series";
         }
         model.addAttribute("series", this.model.getSeries());
@@ -31,13 +32,14 @@ public class SeriesController {
 
     @GetMapping("/sorteer")
     public String sorteerSeries(Model model, HttpSession httpSession) {
-        if (!isLoggedIn(httpSession)) {
-            model.addAttribute("series", this.model.insertionSort(this.model.getSeries()));
-            return "/series";
-        }
-        User user1 = this.model.getUserByUsername((String) httpSession.getAttribute("username"));
-        model.addAttribute("series", this.model.insertionSort(this.model.getSeriesfromuser(user1)));
-        return "/eigenseries";
+
+        model.addAttribute("series", this.model.insertionSort(this.model.getSeries()));
+        return "series";
+
+
+//        User user1 = this.model.getUserByUsername((String) httpSession.getAttribute("username"));
+//        model.addAttribute("series", this.model.insertionSort(this.model.getSeriesfromuser(user1)));
+//        return "/eigenseries";
     }
 // TODO: 15/06/2020 sorteer 
 //    @GetMapping("/zoekFunctie")
@@ -79,6 +81,7 @@ public class SeriesController {
         return "redirect:login";
     }
 
+    //https://github.com/NathanGanesh/myseries/blob/master/src/main/java/nathan/luka/myseries/controller/SeriesController.java
     @PostMapping("/series")
     public String addSerie(@ModelAttribute(value = "perie") Serie serie, HttpSession httpSession) {
         if (!isLoggedIn(httpSession)) {
@@ -123,7 +126,7 @@ public class SeriesController {
 
     // TODO: 14/06/2020 niet werkend
     @PostMapping("/serie/update/{id}")
-    public RedirectView setSerieTitle(@PathVariable("id") int id, @RequestBody String updated_name, HttpSession httpSession) {
+    public RedirectView setSerieTitle(@PathVariable("id") int id, String updated_name, HttpSession httpSession) {
         if (!isLoggedIn(httpSession)) {
             return new RedirectView("/login");
         }

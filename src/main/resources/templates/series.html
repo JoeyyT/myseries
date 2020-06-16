@@ -48,9 +48,8 @@
                 <img th:src="${serie.getImageurl()}">
             </td>
             <td>
-                <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" th:method="patch"
-                      method="post">
-                    <input type="text" value="update serie naam">
+                <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" method="post">
+                    <input type="text" name="updated_name" value="update serie naam">
                 </form>
             </td>
             <td>
