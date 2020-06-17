@@ -2,9 +2,15 @@
 
 <html lang=”en” xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<div th:replace="fragments/header.html :: header"></div>
+
+<!--<div th:replace="fragments/header.html :: header"></div>-->
 <!--navbar-->
 <div th:replace="fragments/topnav.html :: navbar"></div>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Series</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
 <body>
 
 <!--<form action="#" th:action="@{/series}"  method="post">-->
@@ -26,10 +32,10 @@
 
     <form action="" th:action="@{/zoekFunctie}" th:method="get" method="get">
         <label>Sorteer hier</label>
-        <input type="text" id="zoek" value="zoek hier" name="zoek hier" autofocus="autofocus"/>
+        <input type="text" id="zoek" placeholder="zoek hier" name="zoek hier" autofocus="autofocus"/>
     </form>
 
-    <table>
+    <table class="table">
         <tr>
             <th>title</th>
             <th>ID</th>

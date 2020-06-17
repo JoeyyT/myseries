@@ -4,9 +4,10 @@
       xmlns:th="http://www.thymeleaf.org">
 <div th:replace="fragments/header.html :: header"></div>
 <!--navbar-->
-<div th:replace="fragments/topnav.html :: navbar"></div>
 <title>Login page</title>
 <body>
+<div th:replace="fragments/topnav.html :: navbar"></div>
+
 <h1>Login Page</h1>
 <p th:if="${onjuisteGegevens}" class="error">Invalid Username/Password</p>
 <form th:action="@{/login}" th:object="${login}" method="post">

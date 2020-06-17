@@ -11,17 +11,20 @@ public class Serie {
     private String title;
     private String imageurl;
     private String category;
+    private double meanRating;
 
     private User user;
     private final List<Review> reviews;
     private boolean completed;
-
-
+    private int currentEP = 5;
+    private int maxEP = 10;
+    private int progress;
 
     public Serie() {
         this.id = lastId;
         lastId++;
         this.reviews = new ArrayList<>();
+        init();
     }
 
     public Serie(String title, User user, String imageurl) {
@@ -29,12 +32,25 @@ public class Serie {
         this.title = title;
         this.user = user;
         this.imageurl = imageurl;
+        init();
     }
 
     public Serie(String title, User user) {
         this();
         this.title = title;
         this.user = user;
+        init();
+    }
+
+    public void init() {
+        currentEP = 5;
+        maxEP = 10;
+        progress = 50;
+//        progress = (currentEP / maxEP) * 100;
+    }
+
+    public int getProgress() {
+        return progress;
     }
 
     public User getUser() {
@@ -42,7 +58,22 @@ public class Serie {
     }
 
     public void addReview(Review review) {
+        //todo reviewRating not higher then 5 or 10?
+        //Adding review to list of reviews
         this.reviews.add(review);
+        //recalculating the mean rating with new added review
+        calculateMeanRating();
+    }
+
+    private void calculateMeanRating() {
+        for (Review reviewi : reviews) {
+            meanRating += reviewi.getRating();
+        }
+        meanRating = meanRating / reviews.size();
+    }
+
+    public double getMeanRating() {
+        return meanRating;
     }
 
     public void setUser(User user) {
@@ -69,7 +100,9 @@ public class Serie {
         this.title = title;
     }
 
-    public void setCategory(String category) { this.category = category; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public void setImageurl(String imageurl) {
         this.imageurl = imageurl;

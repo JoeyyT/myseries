@@ -1,17 +1,29 @@
-<div th:fragment="navbar" xmlns:th="http://www.w3.org/1999/xhtml">
-    <nav>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+<body>
+    <nav th:fragment="navbar" >
         <ul class="menu">
             <li class="logo"><a href="/index">MySeries</a></li>
-            <li class="text"><a href="/index">Home</a></li>
-            <li class="text"><a href="/eigenseries">Eigen series</a></li>
-            <li class="text"><a href="/profiel">Profiel</a></li>
-            <li class="text"><a href="/series">Alle series</a></li>
-            <li class="text button"><a href="/login">Login</a></li>
-            <li class="text button"><a href="/register">Sign up</a></li>
-            <li class="text button"><a href="/logout">Log out</a></li>
+            <li class="top-nav-text"><a href="/index">Home</a></li>
+            <!--            todo: do not show if user is not logedin -->
+            <li class="top-nav-text"><a href="/eigenseries">Eigen series</a></li>
+            <!--            todo: do not show if user is not logedin -->
+            <li class="top-nav-text"><a href="/profiel">Profiel</a></li>
+            <li class="top-nav-text"><a href="/series">Alle series</a></li>
+            <!--            todo: do not show if user is  logedin -->
+            <li class="top-nav-text button"><a href="/login">Login</a></li>
+            <!--            todo: do not show if user is  logedin -->
+            <div th:if="${session.username == null}"  >
+                <li class="top-nav-text button"><a href="/register">Sign up</a></li>
+                <!--            todo: do not show if user is not logedin -->
+            </div>
+            <li class="top-nav-text button"><a href="/logout">Log out</a></li>
             <!-- Source: https://www.w3schools.com/tags/tag_span.asp + https://www.w3schools.com/html/html_blocks.asp       -->
-            <li class="menu-icon"><i class="material-icons md-white">menu</i></li>
+            <!--            <li class="menu-icon"><i class="material-icons md-white">menu</i></li>-->
         </ul>
     </nav>
-</div>
+</body>
+</html>
 <!--costum navbar fragment-->

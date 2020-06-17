@@ -1,23 +1,34 @@
 package nathan.luka.myseries.dataprovider;
 
+import com.google.gson.Gson;
 import nathan.luka.myseries.model.Review;
 import nathan.luka.myseries.model.Serie;
 import nathan.luka.myseries.model.User;
+import nathan.luka.myseries.model.gjson.SerieGjson;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 public class DataProvider {
     private static DataProvider dataProvider;
 
     private final HashMap<String, User> users;
     private final ArrayList<Serie> series;
+    private final ArrayList<SerieGjson> serieGjsonlist;
+    Gson gson = new Gson();
+    BufferedReader bufferedReader;
 
     public DataProvider() {
+
         users = new HashMap<String, User>();
         series = new ArrayList<>();
+
+        serieGjsonlist = new ArrayList<>();
         init();
+        init2();
     }
 
     public static DataProvider getInstance() {
@@ -27,8 +38,48 @@ public class DataProvider {
         return dataProvider;
     }
 
+    private void init2() {
+        List<String> jsonFileNames = new ArrayList<>();
+        jsonFileNames.add("vikings.json");
+        jsonFileNames.add("gameofthrones.json");
+        jsonFileNames.add("supernatural.json");
+        jsonFileNames.add("theflash.json");
+        jsonFileNames.add("tokyoghoul2014.json");
+        jsonFileNames.add("hunterxhunter2011.json");
+
+        bulkImportJsonToSerieGjsonList(jsonFileNames);
+    }
+    private void bulkImportJsonToSerieGjsonList(List<String> listOfJsonFileNames){
+        if (listOfJsonFileNames != null){
+            String filePath = new File("").getAbsolutePath();
+            for (String listOfJsonFileName : listOfJsonFileNames) {
+                String strNew = filePath + "/src/main/resources/static/json/" + listOfJsonFileName;
+                SerieGjson serieGjson = importJson(strNew);
+
+                if (serieGjson != null) {
+                    serieGjsonlist.add(serieGjson);
+                }
+            }
+            for (SerieGjson serieGjson : serieGjsonlist) {
+                System.out.println("Title: " + serieGjson.getName() + " | Number of seasons:  " + serieGjson.getNumberOfSeasons() + " | Number of episodes: " + serieGjson.getNumberOfEpisodes());
+            }
+        }
+    }
+    private SerieGjson importJson(String file) {
+        try {
+            bufferedReader = new BufferedReader(new FileReader(file));
+            SerieGjson serieGjson = gson.fromJson(bufferedReader, SerieGjson.class);
+            return serieGjson;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     private void init() {
-        User luka = new User( "luka123", "luka");
+        User luka = new User("luka123", "luka");
         User nathan = new User("nathan123", "nathan");
         User theRealDeal = new User("therealdeal123", "therealdeal123");
 
@@ -60,6 +111,9 @@ public class DataProvider {
         Serie pokemon2 = new Serie("pokemon", luka, "/img/pokemon.jpg");
         pokemon2.addReview(new Review("good movie", theRealDeal));
 
+        Serie hunterXHunter2011 = new Serie("Hunter x Hunter (2011)", luka, "/img/hunterxhunter2011.jpg");
+
+        Serie vikings = new Serie("Vikings", luka, "/img/vikings.jpg");
 
         series.add(deez_nuts2);
         series.add(tokyo_ghoul2);
@@ -67,6 +121,8 @@ public class DataProvider {
         series.add(serie);
         series.add(tokyo_ghoul);
         series.add(pokemon);
+        series.add(hunterXHunter2011);
+        series.add(vikings);
 
     }
 

@@ -7,7 +7,14 @@
     margin: 0;
 }
 
-/* Mobile */
+h1 {
+    margin: 10px 5px;
+    font-weight: bold;
+}
+
+h2 {
+    margin: 10px 5px;
+}
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -29,8 +36,6 @@ ul {
 /* all links */
 /* source: https://www.w3schools.com/css/css_link.asp */
 a {
-    /* Text color */
-    color: white;
     /* Removes underline from link */
     text-decoration: none;
 }
@@ -45,7 +50,7 @@ a {
     display: block;
 }
 
-.logo {
+.logo a {
     color: #efefef;
     font-size: 20px;
     font-weight: bold;
@@ -71,40 +76,36 @@ a {
     cursor: pointer;
 }
 
-.text.button {
+.top-nav-text.button {
     /* Puts menu before login and sign up */
     order: 2;
 }
 
-.text {
+.top-nav-text {
     /* makes the witdh of every item 100% */
     width: 100%;
     /* centers text */
     text-align: center;
     /* puts items below menu icon */
     order: 3;
-    /* hides item untill script ----------------------------------------------- */
-    display: none;
+    /*  */
+    display: block;
     /* source: https://www.w3schools.com/cssref/pr_font_weight.asp */
     font-weight: bold;
 }
 
-.text a {
+.top-nav-text a {
     /* Text color */
     color: #3AAFB9;
 }
 
 /* Adds hover on link items for PC clients */
-.text a:hover {
+.top-nav-text a:hover {
     color: #64E9EE;
     /* Source: https://www.w3schools.com/css/tryit.asp?filename=trycss3_transition_delay */
     transition-duration: 0.25s;
 }
 
-.text.active {
-    /* JC uses this to make display none to active (block)*/
-    display: block;
-}
 
 .material-icons.md-white {
     color: white;
@@ -130,11 +131,64 @@ a {
     color: white;
 }
 
+.banner {
+    /*  padding first(5px) is top & bottom, second(20px) is left & right */
+    padding: 15px 0px 10px;
+    position: relative;
+
+}
+
+.info-zone {
+    padding: 40px 40px;
+    color: white;
+    text-shadow: 0 2px 1px rgba(0, 0, 0, .3);
+    display: block;
+    text-align: center;
+}
+
+.progressbar {
+    /*background-color: #20201F;*/
+    /*background-color: rgba(0,0,0,.5);*/
+    /*border-radius: 20px; !* (heightOfInnerDiv / 2) + padding *!*/
+    /*padding: 4px;*/
+    background-color: #333;
+}
+
+.progressbar > div {
+    /*background-color: #F7901E;*/
+    background: #3CB2BC;
+    width: 90%;
+    height: 5px;
+    border-radius: 1px;
+}
+
+
+.table {
+    color: black;
+}
+
+.table.top-nav-text {
+
+}
+
 @media all and (min-width: 280px) {
     .logo {
         /* !!! flex 1 zet logo naar liks en menu naar rechts maar waarom */
         /* Let all the flexible items be the same length, regardless of its content. Source: https://www.w3schools.com/cssref/css3_pr_flex.asp*/
         flex: 1;
+
+    }
+
+    .top-nav-text.button {
+        /* Source: https://www.w3schools.com/cssref/pr_dim_width.asp  */
+        width: auto;
+        /* To let them appear in block format */
+        display: block;
+        order: 1;
+
+    }
+
+    .logo a {
         font-size: 23px;
     }
 }
@@ -146,10 +200,14 @@ a {
         /* !!! flex 1 zet logo naar liks en menu naar rechts maar waarom */
         /* Let all the flexible items be the same length, regardless of its content. Source: https://www.w3schools.com/cssref/css3_pr_flex.asp*/
         flex: 1;
+
+    }
+
+    .logo a {
         font-size: 25px;
     }
 
-    .text.button {
+    .top-nav-text.button {
         /* Source: https://www.w3schools.com/cssref/pr_dim_width.asp  */
         width: auto;
         /* To let them appear in block format */
@@ -167,7 +225,11 @@ a {
     /* Desktop Menu */
     /* Targets all screen with minimal witdh of 468 pixels */
     @media all and (min-width: 768px) {
-        .text {
+        h1 {
+            font-size: 56px;
+        }
+
+        .top-nav-text {
             /* displays al items in block format */
             display: block;
             width: auto;
@@ -182,7 +244,7 @@ a {
             order: 0;
         }
 
-        .text {
+        .top-nav-text {
             order: 1;
         }
 
@@ -202,6 +264,3 @@ a {
         }
     }
 }
-a{
-     color: black;
- }
