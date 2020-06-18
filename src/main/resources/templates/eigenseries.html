@@ -2,16 +2,11 @@
 
 <html lang=”en” xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>series</title>
-    <meta name="author" content="Luka">
-    <link rel="stylesheet" type="text/css" href="/css/serie_style.css">
-</head>
-<!--<div th:replace="fragments/header.html :: header"></div>-->
+<head th:replace="fragments/header :: header"></head>
 <!--navbar-->
 <body>
-<div th:replace="fragments/topnav.html :: navbar"></div>
+<nav th:replace="fragments/topnav :: navbar"></nav>
+
 
 <!--<form action="#" th:action="@{/series}"  method="post">-->
 <!--    <input type="text" th:value="">-->

@@ -1,16 +1,15 @@
 package nathan.luka.myseries.dataprovider;
 
 import com.google.gson.Gson;
-import nathan.luka.myseries.model.Review;
-import nathan.luka.myseries.model.Serie;
-import nathan.luka.myseries.model.User;
+import nathan.luka.myseries.model.*;
+import nathan.luka.myseries.model.gjson.Episode;
+import nathan.luka.myseries.model.gjson.Season;
 import nathan.luka.myseries.model.gjson.SerieGjson;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.net.MalformedURLException;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class DataProvider {
     private static DataProvider dataProvider;
@@ -39,33 +38,199 @@ public class DataProvider {
     }
 
     private void init2() {
-        List<String> jsonFileNames = new ArrayList<>();
-        jsonFileNames.add("vikings.json");
-        jsonFileNames.add("gameofthrones.json");
-        jsonFileNames.add("supernatural.json");
-        jsonFileNames.add("theflash.json");
-        jsonFileNames.add("tokyoghoul2014.json");
-        jsonFileNames.add("hunterxhunter2011.json");
+        List<String> jsonSerieFileNames = new ArrayList<>();
+        jsonSerieFileNames.add("tokyoghoul2014.json");
+        jsonSerieFileNames.add("vikings.json");
+        jsonSerieFileNames.add("gameofthrones.json");
+        jsonSerieFileNames.add("supernatural.json");
+        jsonSerieFileNames.add("theflash.json");
+        jsonSerieFileNames.add("hunterxhunter2011.json");
 
-        bulkImportJsonToSerieGjsonList(jsonFileNames);
+//        bulkImportJsonToSerieGjsonList(jsonSerieFileNames);
+        List<String> jsonSeasonFileNames = new ArrayList<>();
+        jsonSeasonFileNames.add("tokyoghoul2014s1.json");
+        jsonSeasonFileNames.add("tokyoghoul2014s2.json");
+        jsonSeasonFileNames.add("tokyoghoul2014s3.json");
+        jsonSeasonFileNames.add("tokyoghoul2014s4.json");
+        jsonSeasonFileNames.add("vikingss1.json");
+        jsonSeasonFileNames.add("vikingss2.json");
+        jsonSeasonFileNames.add("vikingss3.json");
+        jsonSeasonFileNames.add("vikingss4.json");
+        jsonSeasonFileNames.add("vikingss5.json");
+        jsonSeasonFileNames.add("vikingss6.json");
+        jsonSeasonFileNames.add("theflashs1.json");
+
+
+//        bulkImportSeasonJsonToSerieGjsonList(jsonSeasonFileNames);
+
+//        testData();
+//        SerieCollector serieCollector = new SerieCollector();
+
+        List<String> stringList = new ArrayList<>();
+        stringList.add("https://api.themoviedb.org/3/tv/1622?api_key=8acc85d41e6a21f84c2651c11e9453c7&language=en-US");
+        stringList.add("https://api.themoviedb.org/3/tv/60735/season/1?api_key=8acc85d41e6a21f84c2651c11e9453c7&language=en-US");
+
+        System.out.println("syn1" + System.currentTimeMillis());
+
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+
+        Future<Integer> future = executor.submit(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                Random random = new Random();
+                int duraction = random.nextInt(2000);
+                 Thread.sleep(duraction);
+                return duraction;
+            }
+        })   ;
+
+
+            try {
+                System.out.println("future niggah "+future.get());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+//            }
+        
+        executor.submit(this::test);
+//        for (int i = 0; i < 20; i++) {
+//            System.out.println("xzzzserieGjsonlist.size: " + serieGjsonlist.size());
+//        }
+//
+//        System.out.println("syn2" + System.currentTimeMillis());
+    }   }
+
+    public void test() {
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        List<SerieInfo> serieInfoList = new ArrayList<>();
+//        serieInfoList.add(new SerieInfo(456, 0, 1)); //the simpsons
+//        serieInfoList.add(new SerieInfo(44217, 0, 1));  //vikings
+//        serieInfoList.add(new SerieInfo(1622, 0, 1));    //supernatural
+//        serieInfoList.add(new SerieInfo(60735, 0, 1));    //the flash
+        serieInfoList.add(new SerieInfo(1399, 0, 1));    //got
+//        serieInfoList.add(new SerieInfo(46298, 0, 1));    //hxh2011
+//        serieInfoList.add(new SerieInfo(61374, 0, 1));    //tokyo ghoul 2014
+//        serieInfoList.add(new SerieInfo(62710, 0, 1));    // Blindspot (2015)
+//        serieInfoList.add(new SerieInfo(48866, 0, 1));    // The 100 (2014)
+//        serieInfoList.add(new SerieInfo(60625, 0, 1));    // Rick and Morty (2013)
+
+
+        for (int i = 0; i < serieInfoList.size(); i++) {
+            //Batch importing series
+            if (i + 5 < serieInfoList.size()) {
+                Future<SerieGjson> future = executor.submit(new SerieCollector(serieInfoList.get(i).getId(), serieInfoList.get(i).getAmountOfSeasons(), serieInfoList.get(i).getOption()));
+                Future<SerieGjson> future1 = executor.submit(new SerieCollector(serieInfoList.get(i + 1).getId(), serieInfoList.get(i).getAmountOfSeasons(), serieInfoList.get(i + 1).getOption()));
+                Future<SerieGjson> future2 = executor.submit(new SerieCollector(serieInfoList.get(i + 2).getId(), serieInfoList.get(i).getAmountOfSeasons(), serieInfoList.get(i + 2).getOption()));
+                Future<SerieGjson> future3 = executor.submit(new SerieCollector(serieInfoList.get(i + 3).getId(), serieInfoList.get(i).getAmountOfSeasons(), serieInfoList.get(i + 3).getOption()));
+                Future<SerieGjson> future4 = executor.submit(new SerieCollector(serieInfoList.get(i + 4).getId(), serieInfoList.get(i).getAmountOfSeasons(), serieInfoList.get(i + 4).getOption()));
+                if (future.isDone() && future1.isDone() && future2.isDone() && future3.isDone() && future4.isDone()) {
+                    try {
+                        serieGjsonlist.add(future.get());
+                        serieGjsonlist.add(future1.get());
+                        serieGjsonlist.add(future2.get());
+                        serieGjsonlist.add(future3.get());
+                        serieGjsonlist.add(future4.get());
+                        i += 5;
+                        System.out.println("serieGjsonlist.size: " + serieGjsonlist.size());  
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                //single
+                Future<SerieGjson> future = executor.submit(new SerieCollector(serieInfoList.get(i).getId(), serieInfoList.get(i).getAmountOfSeasons(), serieInfoList.get(i).getOption()));
+
+                    try {
+//                        SerieGjson result = ;
+                        System.out.println(future.get().getName() + " hij komt gwn door");
+                        serieGjsonlist.add(future.get());
+                        System.out.println("xxxxxxxxxxxxxxxxserieGjsonlist.size: " + serieGjsonlist.size());
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+            }
+        }
+          System.out.println("serieGjsonlist.size: " + serieGjsonlist.size()); 
     }
-    private void bulkImportJsonToSerieGjsonList(List<String> listOfJsonFileNames){
-        if (listOfJsonFileNames != null){
+
+
+    public void testData() {
+        for (SerieGjson serieGjson : serieGjsonlist) {
+            System.out.println(serieGjson.getName());
+            List<Season> season = serieGjson.getSeasons();
+            for (Season season1 : season) {
+                List<Episode> episode = season1.getEpisodes();
+                System.out.println(season1.getName() + " season: " + season1.getSeasonNumber());
+                for (int i = 0; i < episode.size(); i++) {
+//                        System.out.println(serieGjson.getSeasons().get(0).getEpisodes().get(i).getEpisodeNumber() + ": ");
+                    System.out.println(episode.get(i).getEpisodeNumber() + ": " + episode.get(i).getName());
+                }
+            }
+        }
+    }
+
+    private void bulkImportJsonToSerieGjsonList(List<String> listOfJsonFileNames) {
+        if (listOfJsonFileNames != null) {
             String filePath = new File("").getAbsolutePath();
             for (String listOfJsonFileName : listOfJsonFileNames) {
                 String strNew = filePath + "/src/main/resources/static/json/" + listOfJsonFileName;
-                SerieGjson serieGjson = importJson(strNew);
+                SerieGjson serieGjson = importSerieGjsonFromJsonFile(strNew);
 
                 if (serieGjson != null) {
                     serieGjsonlist.add(serieGjson);
                 }
             }
             for (SerieGjson serieGjson : serieGjsonlist) {
-                System.out.println("Title: " + serieGjson.getName() + " | Number of seasons:  " + serieGjson.getNumberOfSeasons() + " | Number of episodes: " + serieGjson.getNumberOfEpisodes());
+                System.out.println("Title: " + serieGjson.getName() + " | ID: " + serieGjson.getId() + " | Number of seasons:  " + serieGjson.getNumberOfSeasons() + " | Number of episodes: " + serieGjson.getNumberOfEpisodes());
             }
         }
     }
-    private SerieGjson importJson(String file) {
+
+    private void bulkImportSeasonJsonToSerieGjsonList(List<String> listOfJsonFileNames) {
+        if (listOfJsonFileNames != null) {
+            String filePath = new File("").getAbsolutePath();
+            for (String listOfJsonFileName : listOfJsonFileNames) {
+                String strNew = filePath + "/src/main/resources/static/json/" + listOfJsonFileName;
+                Season season = importSeasonFromJsonFile(strNew);
+
+                if (season != null) {
+                    System.out.println("Season not null");
+                    for (int i = 0; i < serieGjsonlist.size(); i++) {
+
+
+                        if (Objects.equals(serieGjsonlist.get(i).getId(), season.getEpisodes().get(0).getShowId())) {
+                            System.out.println("ID match found " + season.getEpisodes().get(0).getShowId());
+                            //Season is of the same Serie.
+                            boolean seasonAlreadyExists = false;
+                            List<Season> seasonFromSeriesGjsonList = serieGjsonlist.get(i).getSeasons();
+
+
+                            for (int j = 0; j < seasonFromSeriesGjsonList.size(); j++) {
+                                if (Objects.equals(season.getAirDate(), seasonFromSeriesGjsonList.get(j).getAirDate())) {
+                                    seasonAlreadyExists = true;
+                                    if (seasonFromSeriesGjsonList.get(j).getEpisodes().isEmpty() || seasonFromSeriesGjsonList.get(j).getEpisodes().size() < season.getEpisodes().size()) {
+                                        System.out.println("serieGjsonSeason is leeg");
+                                        serieGjsonlist.get(i).getSeasons().set(j, season);
+                                    }
+                                }
+                            }
+                            if (!seasonAlreadyExists) {
+                                serieGjsonlist.get(i).getSeasons().add(season);
+//                                System.out.println("Added season:" + season.getSeasonNumber() + " for serie:" + serieGjson.getName());
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    private SerieGjson importSerieGjsonFromJsonFile(String file) {
         try {
             bufferedReader = new BufferedReader(new FileReader(file));
             SerieGjson serieGjson = gson.fromJson(bufferedReader, SerieGjson.class);
@@ -74,7 +239,18 @@ public class DataProvider {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return null;
+    }
 
+    private Season importSeasonFromJsonFile(String file) {
+        try {
+            bufferedReader = new BufferedReader(new FileReader(file));
+            Season season = gson.fromJson(bufferedReader, Season.class);
+            return season;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
