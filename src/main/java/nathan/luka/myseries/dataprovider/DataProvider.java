@@ -2,9 +2,11 @@ package nathan.luka.myseries.dataprovider;
 
 import com.google.gson.Gson;
 import nathan.luka.myseries.model.Review;
+import nathan.luka.myseries.model.Season;
 import nathan.luka.myseries.model.Serie;
 import nathan.luka.myseries.model.User;
 import nathan.luka.myseries.model.gjson.SerieGjson;
+import org.springframework.http.HttpStatus;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -58,6 +60,14 @@ public class DataProvider {
 
                 if (serieGjson != null) {
                     serieGjsonlist.add(serieGjson);
+                    List<Season> tempSeasonList = new ArrayList<>();
+                    for (int i = 0; i < serieGjson.getSeasons().size(); i++) {
+                        nathan.luka.myseries.model.gjson.Season importedSeason = serieGjson.getSeasons().get(i);
+                        Season tempSeason = new Season(importedSeason.getName(), importedSeason.getSeasonNumber(), serieGjson.getId());
+                        tempSeasonList.add(tempSeason);
+                    }
+                    series.add(new Serie(serieGjson.getName(), serieGjson.getNumberOfSeasons(),
+                            serieGjson.getNumberOfEpisodes(), tempSeasonList, serieGjson.getGenres(), serieGjson.getId(), serieGjson.getOverview()));
                 }
             }
             for (SerieGjson serieGjson : serieGjsonlist) {
@@ -115,14 +125,14 @@ public class DataProvider {
 
         Serie vikings = new Serie("Vikings", luka, "/img/vikings.jpg");
 
-        series.add(deez_nuts2);
-        series.add(tokyo_ghoul2);
-        series.add(pokemon2);
-        series.add(serie);
-        series.add(tokyo_ghoul);
-        series.add(pokemon);
-        series.add(hunterXHunter2011);
-        series.add(vikings);
+//        series.add(deez_nuts2);
+//        series.add(tokyo_ghoul2);
+//        series.add(pokemon2);
+//        series.add(serie);
+//        series.add(tokyo_ghoul);
+//        series.add(pokemon);
+//        series.add(hunterXHunter2011);
+//        series.add(vikings);
 
     }
 

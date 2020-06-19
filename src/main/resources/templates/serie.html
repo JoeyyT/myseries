@@ -2,11 +2,10 @@
 
 <html lang=”en” xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head th:in>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:text="${serie.getTitle()}"></title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-</head>
+
+<header th:replace="fragments/header.html :: header"></header>
+<title th:text="${serie.getTitle()}"></title>
+
 <!--<div th:replace="fragments/header.html :: header"></div>-->
 <!--navbar-->
 
@@ -27,30 +26,24 @@
     <div th:style="'width:' + ${serie.getProgress()} + '%;'"></div>
 </div>
 
-<!--<h1>progress: <span th:text="${serie.getProgress()}"></span> / 100</h1>-->
-
-
-
-<!--<div class="seriePart">-->
-<!--    <h1>Serie: </h1>-->
-<!--    <p th:text="${serie.getTitle()}"></p>-->
-<!--    <p th:text="${serie.getId()}"></p>-->
-<!--    <img th:src="${serie.getImageurl()}">-->
-<!--    <form action="" th:action="@{'/serie/delete/{id}'(id=${serie.getId()})}" th:method="delete" method="post">-->
-<!--        <input type="submit" value="Delete">-->
-<!--    </form>-->
-<!--    <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" th:method="patch" method="post">-->
-<!--        <input type="text" value="update serie naam">-->
-<!--    </form>-->
-<!--    <h2>reviews</h2>-->
-<!--</div>-->
 <div class="description">
+    <p th:text="${serie.getDescription()}"></p>
+</div>
 
+<div class="dropdown">
+    <button class="dropbtn">Dropdown</button>
+    <div class="dropdown-content">
+        <a href="#">Link 1</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+    </div>
 </div>
 
 <div class="episode_block">
     <h2> Episodes</h2>
     <div class="Season">
+
+        </div>
         <table>
             <tr>
                 <th>#</th>
@@ -60,19 +53,19 @@
                 <th>delete</th>
                 <th>update</th>
             </tr>
-            <tr th:each="pier : ${serie.getReview()}">
-                <td>
-                    <a th:text="${pier.getUser()}"></a>
-                </td>
-                <td>
-                    <a th:text="${pier.getComment()}"></a>
-                </td>
-                <td>
-                    <a th:text="${pier.getRating()}"></a>
-                </td>
-                <td>
-                    <a th:text="${pier.getDate()}"></a>
-                </td>
+<!--            <tr th:each="pier : ${serie.getReview()}">-->
+<!--                <td>-->
+<!--                    <a th:text="${pier.getUser()}"></a>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <a th:text="${pier.getComment()}"></a>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <a th:text="${pier.getRating()}"></a>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <a th:text="${pier.getDate()}"></a>-->
+<!--                </td>-->
 
     </div>
 
@@ -88,19 +81,19 @@
             <th>delete</th>
             <th>update</th>
         </tr>
-        <tr th:each="pier : ${serie.getReview()}">
-            <td>
-                <a th:text="${pier.getUser()}"></a>
-            </td>
-            <td>
-                <a th:text="${pier.getComment()}"></a>
-            </td>
-            <td>
-                <a th:text="${pier.getRating()}"></a>
-            </td>
-            <td>
-                <a th:text="${pier.getDate()}"></a>
-            </td>
+<!--        <tr th:each="pier : ${serie.getReview()}">-->
+<!--            <td>-->
+<!--                <a th:text="${pier.getUser()}"></a>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <a th:text="${pier.getComment()}"></a>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <a th:text="${pier.getRating()}"></a>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <a th:text="${pier.getDate()}"></a>-->
+<!--            </td>-->
             <td>
                 <form action="/delete" method="post">
                     <input type="Submit" value="delete">
