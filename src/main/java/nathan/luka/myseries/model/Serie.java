@@ -36,7 +36,8 @@ public class Serie {
         this.reviews = new ArrayList<>();
         init();
     }
-    public Serie(String title, Integer amountOfSeasons, Integer amountOfEpisodes, List<Season> seasons, List<Genre> genres, Integer themoviedbSerieID, String description) {
+    public Serie(String title, Integer amountOfSeasons, Integer amountOfEpisodes,
+                 List<Season> seasons, List<Genre> genres, Integer themoviedbSerieID, String description, User user) {
         this.title = title;
         this.amountOfSeasons = amountOfSeasons;
         this.amountOfEpisodes = amountOfEpisodes;
@@ -44,6 +45,7 @@ public class Serie {
         this.genres = genres;
         this.themoviedbSerieID = themoviedbSerieID;
         this.description = description;
+        this.user = user;
 
         this.id = lastId;
         lastId++;

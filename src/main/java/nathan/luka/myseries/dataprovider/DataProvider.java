@@ -67,7 +67,7 @@ public class DataProvider {
                         tempSeasonList.add(tempSeason);
                     }
                     series.add(new Serie(serieGjson.getName(), serieGjson.getNumberOfSeasons(),
-                            serieGjson.getNumberOfEpisodes(), tempSeasonList, serieGjson.getGenres(), serieGjson.getId(), serieGjson.getOverview()));
+                            serieGjson.getNumberOfEpisodes(), tempSeasonList, serieGjson.getGenres(), serieGjson.getId(), serieGjson.getOverview(), users.get("luka")));
                 }
             }
             for (SerieGjson serieGjson : serieGjsonlist) {
