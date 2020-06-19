@@ -4,7 +4,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SerieGjson {
+public class SerieTheMovieDB {
 
 @SerializedName("backdrop_path")
 @Expose
@@ -77,7 +77,7 @@ private String posterPath;
 private List<ProductionCompany> productionCompanies = null;
 @SerializedName("seasons")
 @Expose
-private List<Season> seasons = null;
+private List<SeasonTheMovieDB> seasonTheMovieDBS = null;
 @SerializedName("status")
 @Expose
 private String status;
@@ -275,12 +275,12 @@ public void setProductionCompanies(List<ProductionCompany> productionCompanies) 
 this.productionCompanies = productionCompanies;
 }
 
-public List<Season> getSeasons() {
-return seasons;
+public List<SeasonTheMovieDB> getSeasonTheMovieDBS() {
+return seasonTheMovieDBS;
 }
 
-public void setSeasons(List<Season> seasons) {
-this.seasons = seasons;
+public void setSeasonTheMovieDBS(List<SeasonTheMovieDB> seasonTheMovieDBS) {
+this.seasonTheMovieDBS = seasonTheMovieDBS;
 }
 
 public String getStatus() {
