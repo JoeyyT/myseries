@@ -1,6 +1,7 @@
 package nathan.luka.myseries.model;
 
 import com.google.gson.Gson;
+import nathan.luka.myseries.dataprovider.DataProvider;
 import nathan.luka.myseries.model.gjson.Episode;
 import nathan.luka.myseries.model.gjson.SeasonTheMovieDB;
 import nathan.luka.myseries.model.gjson.SerieTheMovieDB;
@@ -12,15 +13,16 @@ import java.net.http.HttpClient;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Callable;
+import java.util.concurrent.*;
 
-public class SerieCollector implements Callable<SerieTheMovieDB> {
+public class SerieCollector implements Callable<Serie> {
 
 
-
+private DataProvider dataProvider;
     private ArrayList<Serie> series;
     private static ArrayList<SeasonTheMovieDB> seasonsList;
     private ArrayList<SerieTheMovieDB> serieGjsonlist;
@@ -61,11 +63,11 @@ public class SerieCollector implements Callable<SerieTheMovieDB> {
 //                    results.add(result);
                     getResponseBody(result);
                 }
+
                 break;
             case 3:
-//                result = website + serieID + var + api_key + language;
-//                results.add(result);
-//                getSerieWithSeason()
+                getSerieWithSeason(serieID, amountOfSeasons, 1);
+                getSerieWithSeason(serieID, amountOfSeasons, 2);
                 break;
         }
 
@@ -78,7 +80,7 @@ public class SerieCollector implements Callable<SerieTheMovieDB> {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(urls))
                     //cancel if timeout == 2min
-//                .timeout(Duration.ofMinutes(2))
+                .timeout(Duration.ofMinutes(2))
                     .build();
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     //get the body
@@ -191,33 +193,9 @@ public class SerieCollector implements Callable<SerieTheMovieDB> {
 
                 if (seasonTheMovieDB != null) {
                     System.out.println("Season not null");
-                    for (int i = 0; i < serieGjsonlist.size(); i++) {
-
-
-                        if (Objects.equals(serieGjsonlist.get(i).getId(), seasonTheMovieDB.getEpisodes().get(0).getShowId())) {
-                            System.out.println("ID match found " + seasonTheMovieDB.getEpisodes().get(0).getShowId());
-                            //Season is of the same Serie.
-                            boolean seasonAlreadyExists = false;
-                            List<SeasonTheMovieDB> seasonTheMovieDBFromSeriesGjsonList = serieGjsonlist.get(i).getSeasonTheMovieDBS();
-
-
-                            for (int j = 0; j < seasonTheMovieDBFromSeriesGjsonList.size(); j++) {
-                                if (Objects.equals(seasonTheMovieDB.getAirDate(), seasonTheMovieDBFromSeriesGjsonList.get(j).getAirDate())) {
-                                    seasonAlreadyExists = true;
-                                    if (seasonTheMovieDBFromSeriesGjsonList.get(j).getEpisodes().isEmpty() || seasonTheMovieDBFromSeriesGjsonList.get(j).getEpisodes().size() < seasonTheMovieDB.getEpisodes().size()) {
-                                        System.out.println("serieGjsonSeason is leeg");
-                                        serieGjsonlist.get(i).getSeasonTheMovieDBS().set(j, seasonTheMovieDB);
-                                    }
-                                }
-                            }
-                            if (!seasonAlreadyExists) {
-                                serieGjsonlist.get(i).getSeasonTheMovieDBS().add(seasonTheMovieDB);
-//                                System.out.println("Added season:" + season.getSeasonNumber() + " for serie:" + serieGjson.getName());
-                            }
-                        }
-                    }
+                    //todo: fixen met seriemerger
+//                    mergeSeasonWithSerie(seasonTheMovieDB);
                 }
-
             }
         }
     }
@@ -246,10 +224,19 @@ public class SerieCollector implements Callable<SerieTheMovieDB> {
         return null;
     }
 
-    @Override
-    public SerieTheMovieDB call() throws Exception {
-        System.out.println("done with: " + serieTheMovieDB.getName());
-        return serieTheMovieDB;
-    }
 
+
+    @Override
+    public Serie call() throws Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        Future<Serie> future =  executor.submit(new SerieMerger(serieTheMovieDB, seasonsList));
+        Serie result = future.get();
+
+        //good
+        System.out.println("done with: " + result.getTitle());
+        serieGjsonlist.add(serieTheMovieDB);
+//        testData();
+//        return serieTheMovieDB;
+        return result;
+    }
 }

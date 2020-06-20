@@ -18,11 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 @Controller
+
 public class RegisterController {
     private final DataProvider model = DataProvider.getInstance();
 
 
-    @GetMapping("/login")
+    @GetMapping(path = "/login")
     public String loginView(HttpServletResponse response) {
         return "login";
     }

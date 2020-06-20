@@ -1,20 +1,19 @@
 package nathan.luka.myseries.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import nathan.luka.myseries.dataprovider.DataProvider;
 import nathan.luka.myseries.model.Review;
 import nathan.luka.myseries.model.Serie;
 import nathan.luka.myseries.model.User;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller
+
 public class SeriesController {
     private final DataProvider model = DataProvider.getInstance();
 
@@ -63,6 +62,21 @@ public class SeriesController {
         }
         model.addAttribute("eigen_series", this.model.getSeriesfromuser(user1));
         return "eigenseries";
+    }
+
+    @GetMapping("/backup")
+    public String backupSeries() {
+//        if (!isLoggedIn(httpSession)) {
+//            return "redirect:/login";
+//        }
+
+        try {
+            DataProvider.getDataProvider().backupSeriesToJsonFile();
+            System.out.println("tried to backup series");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/index")

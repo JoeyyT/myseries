@@ -8,16 +8,17 @@ public class Season {
     private String airDate;
     private Integer episodeCount;
     private List<Episode> episodes;
-    private Integer id;
+
     private String name;
     private Integer seasonNumber;
     private Integer themoviedbSerieID;
 
 
-    public Season(String name, Integer seasonNumber, Integer themoviedbSerieID) {
+    public Season(String name, Integer seasonNumber, Integer themoviedbSerieID, Integer episodeCount) {
         this.episodes = new ArrayList<>();
         this.name = name;
         this.seasonNumber = seasonNumber;
+        this.episodeCount = episodeCount;
         this.themoviedbSerieID = themoviedbSerieID;
     }
 
@@ -45,13 +46,6 @@ public class Season {
         this.episodes = episodes;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

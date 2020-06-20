@@ -1,22 +1,60 @@
 package nathan.luka.myseries.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import nathan.luka.myseries.model.gjson.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Serie {
+public class Serie extends ArrayList<Serie> {
+
+
     private static int lastId;
 
     private final int id;
+    @SerializedName("title")
+    @Expose
+    private String title;  //d
 
-    private String title;
-    private String imageurl;
-    private Integer amountOfEpisodes;
+    @SerializedName("imageurl")
+    @Expose
+    private String imageurl; //backdrop
+
+    @SerializedName("gridImageURL")
+    @Expose
+    private String gridImageURL;
+
+    @SerializedName("amountOfEpisodes")
+    @Expose
+    private Integer amountOfEpisodes; //d
+
+    @SerializedName("category")
+    @Expose
     private String category;
-    private List<Genre> genres;
-    private Integer amountOfSeasons;
 
+    @SerializedName("genres")
+    @Expose
+    private List<Genre> genres; // test if works
+
+    @SerializedName("amountOfSeasons")
+    @Expose
+    private Integer amountOfSeasons; //d
+
+    @SerializedName("status")
+    @Expose
+    private String status; //d
+
+    @SerializedName("themoviedbSerieID")
+    @Expose
+    private Integer themoviedbSerieID; //d
+
+    @SerializedName("description")
+    @Expose
+    private String description; //d
+
+    @SerializedName("seasons")
+    @Expose
     private List<Season> seasons;
     private final List<Review> reviews;
     private double meanRating;
@@ -26,8 +64,6 @@ public class Serie {
     private int maxEP = 10;
     private int progress;
     private boolean completed;
-    private Integer themoviedbSerieID;
-    private String description;
 
     public Serie() {
         this.seasons = new ArrayList<>();
@@ -36,8 +72,9 @@ public class Serie {
         this.reviews = new ArrayList<>();
         init();
     }
+
     public Serie(String title, Integer amountOfSeasons, Integer amountOfEpisodes,
-                 List<Season> seasons, List<Genre> genres, Integer themoviedbSerieID, String description, User user) {
+                 List<Season> seasons, List<Genre> genres, Integer themoviedbSerieID, String description, User user, String status) {
         this.title = title;
         this.amountOfSeasons = amountOfSeasons;
         this.amountOfEpisodes = amountOfEpisodes;
@@ -46,7 +83,7 @@ public class Serie {
         this.themoviedbSerieID = themoviedbSerieID;
         this.description = description;
         this.user = user;
-
+        this.status = status;
         this.id = lastId;
         lastId++;
         this.reviews = new ArrayList<>();
@@ -226,6 +263,22 @@ public class Serie {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getGridImageURL() {
+        return gridImageURL;
+    }
+
+    public void setGridImageURL(String gridImageURL) {
+        this.gridImageURL = gridImageURL;
     }
 
     public String toString() {

@@ -25,67 +25,66 @@
 </div>
 
 <!--<h1>progress: <span th:text="${serie.getProgress()}"></span> / 100</h1>-->
+<div class="position-mid">
+    <div class="basic-info">
+        <li th:text="'Status: ' + ${serie.getStatus()}"> </li>
+        <li th:text="'Seasons: ' + ${serie.getAmountOfSeasons()}"></li>
+        <li th:text="'Episodes: ' + ${serie.getAmountOfEpisodes()}"></li>
+    </div>
+        <div class="description">
+            <h3>Description</h3>
+            <p th:text="${serie.getDescription()}"></p>
 
-
-
-<!--<div class="seriePart">-->
-<!--    <h1>Serie: </h1>-->
-<!--    <p th:text="${serie.getTitle()}"></p>-->
-<!--    <p th:text="${serie.getId()}"></p>-->
-<!--    <img th:src="${serie.getImageurl()}">-->
-<!--    <form action="" th:action="@{'/serie/delete/{id}'(id=${serie.getId()})}" th:method="delete" method="post">-->
-<!--        <input type="submit" value="Delete">-->
-<!--    </form>-->
-<!--    <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" th:method="patch" method="post">-->
-<!--        <input type="text" value="update serie naam">-->
-<!--    </form>-->
-<!--    <h2>reviews</h2>-->
-<!--</div>-->
-<div class="description">
-
-</div>
+    </div>
 
 <h2> Episodes</h2>
+<div class="season">
+    <div class="dropdown">
+        <button class="dropbtn">Dropdown</button>
+        <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="#">Link 3</a>
+        </div>
+    </div>
 
 
 
-
-
-    <div class="class_review">
-    <table>
-        <tr>
-            <th>User</th>
-            <th>comment</th>
-            <th>rating</th>
-            <th>date added</th>
-            <th>delete</th>
-            <th>update</th>
-        </tr>
-<!--        <tr th:each="pier : ${serie.getReview()}">-->
-<!--            <td>-->
-<!--                <a th:text="${pier.getUser()}"></a>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--                <a th:text="${pier.getComment()}"></a>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--                <a th:text="${pier.getRating()}"></a>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--                <a th:text="${pier.getDate()}"></a>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--                <form action="/delete" method="post">-->
-<!--                    <input type="Submit" value="delete">-->
-<!--                </form>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--                <form action="/delete" method="post">-->
-<!--                    <input type="Text" value="Update">-->
-<!--                </form>-->
-<!--            </td>-->
-<!--        </tr>-->
-    </table>
 </div>
+    <table class="table">
+    <tr>
+        <th>Episode</th>
+        <th>Title</th>
+        <th>Release date</th>
+        <th>Watched</th>
+    </tr>
+
+
+<!--             <tr th:each="episode : ${serie.getSeasons().get(0).getEpisodes()}">-->
+<!--                <td>-->
+<!--                    <a th:text="${episode.getEpisodeNumber()}"></a>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <a th:text="${episode.getName()}"></a>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <a th:text="${episode.getReleaseDate()}"></a>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <a th:text="${episode.getTmdbID()}"></a>-->
+<!--                </td>-->
+<!--                <td>-->
+                    <form action="/delete" method="post">
+                        <input type="Submit" value="delete">
+                    </form>
+                </td>
+                <td>
+                    <form action="/delete" method="post">
+                        <input type="Text" value="Update">
+                    </form>
+                </td>
+            </tr>
+        </table>
+    <!--</div>-->
 </body>
 </html>
