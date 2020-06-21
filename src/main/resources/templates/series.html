@@ -14,7 +14,7 @@
 <!--    <input type="text" th:value="">-->
 <!--</form>-->
 
-<div class="container">
+
     <h1>Series: </h1>
 
     <form action="" th:action="@{/series}" th:object="${perie}" th:method="post" method="post">
@@ -32,38 +32,66 @@
         <input type="text" id="zoek" placeholder="zoek hier" name="zoek hier" autofocus="autofocus"/>
     </form>
 
-    <table class="table">
-        <tr>
-            <th>title</th>
-            <th>ID</th>
-            <th>image</th>
-            <th>delete</th>
-            <th>update</th>
-        </tr>
-        <tr th:each="serie : ${series}">
-            <td>
-                <a th:text="${serie.getTitle()}" th:href="@{'/serie/' + ${serie.id}}" target="_blank"></a>
-            </td>
-            <td
-                    th:text="${serie.getId()}">id
-            </td>
-            <td>
-                <img th:src="${serie.getImageurl()}">
-            </td>
-            <td>
-                <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" method="post">
-                    <input type="text" name="updated_name" value="update serie naam">
-                </form>
-            </td>
-            <td>
-                <form action="" th:action="@{'/serie/delete/{id}'(id=${serie.getId()})}" th:method="delete"
-                      method="post">
-                    <input type="submit" value="Delete">
-                </form>
-            </td>
-        </tr>
-    </table>
+    <div class="grid">
+    <tr th:each="serie : ${series}">
+        <div class="tile" >
+            <div class="tile image" th:style="'background-image:url(' + ${serie.getGridImageURL()} + ');'" >
+                <div class="info-text">
+                <p th:text="${serie.getTitle()}"></p>
+                <p>SCORE: <span th:text="${serie.getMeanRating()}"></span> / 10</p>
+                </div>
+            </div>
+
+        </div>
+    </tr>
     </div>
+
+<!--    <div class="cards">-->
+<!--        <div class="card">ONE</div>-->
+<!--        <div class="card">TWO</div>-->
+<!--        <div class="card">THREE</div>-->
+<!--        <div class="card">FOUR</div>-->
+<!--        <div class="card">FIVE</div>-->
+<!--        <div class="card">SIX</div>-->
+<!--        <div class="card">SEVEN</div>-->
+<!--        <div class="card">EIGHT</div>-->
+<!--        <div class="card">NINE</div>-->
+<!--        <div class="card">TEN</div>-->
+<!--        <div class="card">ELEVEN</div>-->
+<!--        <div class="card">TWELVE</div>-->
+<!--    </div>-->
+<!--    <table class="table">-->
+<!--        <tr>-->
+<!--            <th>title</th>-->
+<!--            <th>ID</th>-->
+<!--            <th>image</th>-->
+<!--            <th>delete</th>-->
+<!--            <th>update</th>-->
+<!--        </tr>-->
+<!--        <tr th:each="serie : ${series}">-->
+<!--            <td>-->
+<!--                <a th:text="${serie.getTitle()}" th:href="@{'/serie/' + ${serie.id}}" target="_blank"></a>-->
+<!--            </td>-->
+<!--            <td-->
+<!--                    th:text="${serie.getId()}">id-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <img th:src="${serie.getGridImageURL()}">-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" method="post">-->
+<!--                    <input type="text" name="updated_name" value="update serie naam">-->
+<!--                </form>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <form action="" th:action="@{'/serie/delete/{id}'(id=${serie.getId()})}" th:method="delete"-->
+<!--                      method="post">-->
+<!--                    <input type="submit" value="Delete">-->
+<!--                </form>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </table>-->
+
 
 
 </body>

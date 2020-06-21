@@ -42,7 +42,7 @@ public class DataProvider {
         }
 
         List<SerieInfo> serieInfoList = new ArrayList<>();
-//        serieInfoList.add(new SerieInfo(456, 3, 3)); //the simpsons
+        serieInfoList.add(new SerieInfo(456, 3, 3)); //the simpsons
 //        serieInfoList.add(new SerieInfo(44217, 1, 3));  //vikings max season = 6
 //        serieInfoList.add(new SerieInfo(1622, 1, 3));    //supernatural
 //        serieInfoList.add(new SerieInfo(60735, 6, 3));    //the flash
@@ -52,9 +52,9 @@ public class DataProvider {
 //        serieInfoList.add(new SerieInfo(62710, 5, 3));    // Blindspot (2015)
 //        serieInfoList.add(new SerieInfo(48866, 2, 3));    // The 100 (2014)
 //        serieInfoList.add(new SerieInfo(60625, 4, 3));    // Rick and Morty (2013)
-        serieInfoList.add(new SerieInfo(1434, 1, 3));    // Family Guy (1999)
+//        serieInfoList.add(new SerieInfo(1434, 1, 3));    // Family Guy (1999)
 
-        getSeriesFromThemoviedb(serieInfoList);
+//        getSeriesFromThemoviedb(serieInfoList);
     }
 
     /**

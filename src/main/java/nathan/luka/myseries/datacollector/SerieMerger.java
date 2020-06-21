@@ -1,9 +1,11 @@
 package nathan.luka.myseries.datacollector;
+
 import nathan.luka.myseries.model.Episode;
 import nathan.luka.myseries.model.Season;
 import nathan.luka.myseries.model.Serie;
 import nathan.luka.myseries.model.gjson.SeasonTheMovieDB;
 import nathan.luka.myseries.model.gjson.SerieTheMovieDB;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.*;
@@ -48,7 +50,7 @@ public class SerieMerger implements Callable<Serie> {
                 Season season = convertSeasonTheMovieDBToSeason(this.seasonTheMovieDB);
                 List<nathan.luka.myseries.model.gjson.Episode> episodes = seasonTheMovieDB.getEpisodes();
                 for (nathan.luka.myseries.model.gjson.Episode episode : episodes) {
-                season.getEpisodes().add(new Episode(episode.getName(), episode.getSeasonNumber(), episode.getEpisodeNumber(), episode.getShowId(), episode.getAirDate()));
+                    season.getEpisodes().add(new Episode(episode.getName(), episode.getSeasonNumber(), episode.getEpisodeNumber(), episode.getShowId(), episode.getAirDate()));
                 }
                 result.getSeasons().add(season);
             }
@@ -58,7 +60,6 @@ public class SerieMerger implements Callable<Serie> {
 
     /**
      * This method provides the nested MergeSeasonWithSerie.class with the needed params to add seasons to result, asyn to speed up the progress.
-     *
      */
     public void mergeSeasonsWithSerie() {
         ExecutorService executor = Executors.newFixedThreadPool(seasonTheMovieDBList.size());
@@ -79,12 +80,13 @@ public class SerieMerger implements Callable<Serie> {
         result.setDescription(serieTheMovieDB.getOverview());
         result.setGenres(serieTheMovieDB.getGenres());
         //todo download image
-        result.setImageurl(serieTheMovieDB.getBackdropPath());
-        result.setGridImageURL(serieTheMovieDB.getPosterPath());
+        result.setImageurl("https://image.tmdb.org/t/p/original" + serieTheMovieDB.getBackdropPath());
+        result.setGridImageURL("https://image.tmdb.org/t/p/w300_and_h450_bestv2" + serieTheMovieDB.getPosterPath());
     }
 
     /**
-     *  Extracts all data from SeasonTheMovieDB.class to Season
+     * Extracts all data from SeasonTheMovieDB.class to Season
+     *
      * @param seasonTheMovieDB imported class from themoviedb
      * @return Season
      */
