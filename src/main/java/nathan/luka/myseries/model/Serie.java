@@ -1,13 +1,19 @@
 package nathan.luka.myseries.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import nathan.luka.myseries.model.gjson.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class Serie extends ArrayList<Serie> {
+@JsonPropertyOrder(alphabetic=true)
+@JsonRootName(value = "Serie")
+public class Serie  {
 
 
     private static int lastId;
@@ -64,7 +70,6 @@ public class Serie extends ArrayList<Serie> {
     private int maxEP = 10;
     private int progress;
     private boolean completed;
-
     public Serie() {
         this.seasons = new ArrayList<>();
         this.id = lastId;
@@ -140,7 +145,7 @@ public class Serie extends ArrayList<Serie> {
     public int getId() {
         return id;
     }
-
+    @JsonGetter("title")
     public String getTitle() {
         return title;
     }
@@ -281,8 +286,16 @@ public class Serie extends ArrayList<Serie> {
         this.gridImageURL = gridImageURL;
     }
 
+    @Override
+//    @JsonValue
     public String toString() {
-        return "Movie: " + title;
-    }
+        StringBuilder sb = new StringBuilder();
+        sb.append("***** Employee Details *****\n");
+        sb.append("ID=" + getId() + "\n");
+        sb.append("Name=" + getTitle() + "\n");
+        sb.append("*****************************");
 
+        return sb.toString();
+
+    }
 }

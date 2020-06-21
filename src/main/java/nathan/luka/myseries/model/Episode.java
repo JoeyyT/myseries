@@ -1,9 +1,14 @@
 package nathan.luka.myseries.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+@JsonPropertyOrder(alphabetic=true)
+@JsonRootName(value = "Episode")
 public class Episode {
 
-    private String airDate;
-    private Integer id;
+
+
     private String name;
     private Integer seasonNumber;
     private Integer episodeNumber;
@@ -19,21 +24,6 @@ public class Episode {
         this.tmdbID = tmdbID;
     }
 
-    public String getAirDate() {
-        return airDate;
-    }
-
-    public void setAirDate(String airDate) {
-        this.airDate = airDate;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

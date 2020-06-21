@@ -40,27 +40,27 @@
             <th>delete</th>
             <th>update</th>
         </tr>
-<!--        <tr th:each="serie : ${series}">-->
-<!--            <td>-->
-<!--                <a th:text="${serie.getTitle()}" th:href="@{'/serie/' + ${serie.id}}" target="_blank"></a>-->
-<!--            </td>-->
-<!--            <td-->
-<!--                    th:text="${serie.getId()}">id-->
-<!--            </td>-->
-<!--            <td>-->
-<!--                <img th:src="${serie.getImageurl()}">-->
-<!--            </td>-->
-<!--            <td>-->
-<!--                <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" method="post">-->
-<!--                    <input type="text" name="updated_name" value="update serie naam">-->
-<!--                </form>-->
-<!--            </td>-->
-<!--            <td>-->
-<!--                <form action="" th:action="@{'/serie/delete/{id}'(id=${serie.getId()})}" th:method="delete"-->
-<!--                      method="post">-->
-<!--                    <input type="submit" value="Delete">-->
-<!--                </form>-->
-<!--            </td>-->
+        <tr th:each="serie : ${series}">
+            <td>
+                <a th:text="${serie.getTitle()}" th:href="@{'/serie/' + ${serie.id}}" target="_blank"></a>
+            </td>
+            <td
+                    th:text="${serie.getId()}">id
+            </td>
+            <td>
+                <img th:src="${serie.getImageurl()}">
+            </td>
+            <td>
+                <form action="" th:action="@{'/serie/update/{id}'(id=${serie.getId()})}" method="post">
+                    <input type="text" name="updated_name" value="update serie naam">
+                </form>
+            </td>
+            <td>
+                <form action="" th:action="@{'/serie/delete/{id}'(id=${serie.getId()})}" th:method="delete"
+                      method="post">
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
         </tr>
     </table>
     </div>

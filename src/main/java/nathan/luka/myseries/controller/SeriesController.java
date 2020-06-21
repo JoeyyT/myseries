@@ -70,12 +70,8 @@ public class SeriesController {
 //            return "redirect:/login";
 //        }
 
-        try {
-            DataProvider.getDataProvider().backupSeriesToJsonFile();
-            System.out.println("tried to backup series");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        DataProvider.getDataProvider().backupSeriesToJsonFile();
+        System.out.println("tried to backup series");
         return "redirect:/";
     }
 

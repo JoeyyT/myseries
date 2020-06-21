@@ -1,12 +1,24 @@
 package nathan.luka.myseries.dataprovider;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import nathan.luka.myseries.model.*;
 import nathan.luka.myseries.model.gjson.Episode;
 import nathan.luka.myseries.model.gjson.SeasonTheMovieDB;
 import nathan.luka.myseries.model.gjson.SerieTheMovieDB;
 
 import java.io.*;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -28,7 +40,11 @@ public class DataProvider {
         serieGjsonlist = new ArrayList<>();
         init();
         init2();
-//        importSeriesFromJsonFile("series_backup.json");
+        try {
+            importSeriesFromJsonFile("series_backup.json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static DataProvider getInstance() {
@@ -80,7 +96,7 @@ public class DataProvider {
 
 
         //Load API data
-        executor.execute(this::test);
+//        executor.execute(this::test);
 //        test();
 //        for (int i = 0; i < 20; i++) {
 //            System.out.println("xzzzserieGjsonlist.size: " + serieGjsonlist.size());
@@ -145,7 +161,6 @@ public class DataProvider {
     }
 
 
-
     public void testData() {
         for (SerieTheMovieDB serieTheMovieDB : serieGjsonlist) {
             System.out.println(serieTheMovieDB.getName());
@@ -188,45 +203,45 @@ public class DataProvider {
 //        }
 //    }
 
-    private void bulkImportSeasonJsonToSerieGjsonList(List<String> listOfJsonFileNames) {
-        if (listOfJsonFileNames != null) {
-            String filePath = new File("").getAbsolutePath();
-            for (String listOfJsonFileName : listOfJsonFileNames) {
-                String strNew = filePath + "/src/main/resources/static/json/" + listOfJsonFileName;
-                SeasonTheMovieDB seasonTheMovieDB = importSeasonFromJsonFile(strNew);
-
-                if (seasonTheMovieDB != null) {
-                    System.out.println("Season not null");
-                    for (int i = 0; i < serieGjsonlist.size(); i++) {
-
-
-                        if (Objects.equals(serieGjsonlist.get(i).getId(), seasonTheMovieDB.getEpisodes().get(0).getShowId())) {
-                            System.out.println("ID match found " + seasonTheMovieDB.getEpisodes().get(0).getShowId());
-                            //Season is of the same Serie.
-                            boolean seasonAlreadyExists = false;
-                            List<SeasonTheMovieDB> seasonTheMovieDBFromSeriesGjsonList = serieGjsonlist.get(i).getSeasonTheMovieDBS();
-
-
-                            for (int j = 0; j < seasonTheMovieDBFromSeriesGjsonList.size(); j++) {
-                                if (Objects.equals(seasonTheMovieDB.getAirDate(), seasonTheMovieDBFromSeriesGjsonList.get(j).getAirDate())) {
-                                    seasonAlreadyExists = true;
-                                    if (seasonTheMovieDBFromSeriesGjsonList.get(j).getEpisodes().isEmpty() || seasonTheMovieDBFromSeriesGjsonList.get(j).getEpisodes().size() < seasonTheMovieDB.getEpisodes().size()) {
-                                        System.out.println("serieGjsonSeason is leeg");
-                                        serieGjsonlist.get(i).getSeasonTheMovieDBS().set(j, seasonTheMovieDB);
-                                    }
-                                }
-                            }
-                            if (!seasonAlreadyExists) {
-                                serieGjsonlist.get(i).getSeasonTheMovieDBS().add(seasonTheMovieDB);
-//                                System.out.println("Added season:" + season.getSeasonNumber() + " for serie:" + serieGjson.getName());
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-    }
+//    private void bulkImportSeasonJsonToSerieGjsonList(List<String> listOfJsonFileNames) {
+//        if (listOfJsonFileNames != null) {
+//            String filePath = new File("").getAbsolutePath();
+//            for (String listOfJsonFileName : listOfJsonFileNames) {
+//                String strNew = filePath + "/src/main/resources/static/json/" + listOfJsonFileName;
+//                SeasonTheMovieDB seasonTheMovieDB = importSeasonFromJsonFile(strNew);
+//
+//                if (seasonTheMovieDB != null) {
+//                    System.out.println("Season not null");
+//                    for (int i = 0; i < serieGjsonlist.size(); i++) {
+//
+//
+//                        if (Objects.equals(serieGjsonlist.get(i).getId(), seasonTheMovieDB.getEpisodes().get(0).getShowId())) {
+//                            System.out.println("ID match found " + seasonTheMovieDB.getEpisodes().get(0).getShowId());
+//                            //Season is of the same Serie.
+//                            boolean seasonAlreadyExists = false;
+//                            List<SeasonTheMovieDB> seasonTheMovieDBFromSeriesGjsonList = serieGjsonlist.get(i).getSeasonTheMovieDBS();
+//
+//
+//                            for (int j = 0; j < seasonTheMovieDBFromSeriesGjsonList.size(); j++) {
+//                                if (Objects.equals(seasonTheMovieDB.getAirDate(), seasonTheMovieDBFromSeriesGjsonList.get(j).getAirDate())) {
+//                                    seasonAlreadyExists = true;
+//                                    if (seasonTheMovieDBFromSeriesGjsonList.get(j).getEpisodes().isEmpty() || seasonTheMovieDBFromSeriesGjsonList.get(j).getEpisodes().size() < seasonTheMovieDB.getEpisodes().size()) {
+//                                        System.out.println("serieGjsonSeason is leeg");
+//                                        serieGjsonlist.get(i).getSeasonTheMovieDBS().set(j, seasonTheMovieDB);
+//                                    }
+//                                }
+//                            }
+//                            if (!seasonAlreadyExists) {
+//                                serieGjsonlist.get(i).getSeasonTheMovieDBS().add(seasonTheMovieDB);
+////                                System.out.println("Added season:" + season.getSeasonNumber() + " for serie:" + serieGjson.getName());
+//                            }
+//                        }
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
 
     private SerieTheMovieDB importSerieGjsonFromJsonFile(String file) {
         try {
@@ -240,83 +255,106 @@ public class DataProvider {
         return null;
     }
 
-    public void backupSeriesToJsonFile() throws IOException {
-//         class User {
-//            private int id;
-//            private String name;
-//            private transient String nationality;
-//
-//            public User(int id, String name, String nationality) {
-//                this.id = id;
-//                this.name = name;
-//                this.nationality = nationality;
-//            }
-//
-//            public User(int id, String name) {
-//                this(id, name, null);
-//            }
-//        }
-//
-//        User[] users = new User[] { new User(1, "Mike"), new User(2, "Tom") };
-
-
-        Gson gson = new Gson();
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public void backupSeriesToJsonFile() {
         String filePath = new File("").getAbsolutePath();
 
         filePath += "/src/main/resources/static/json/" + "series_backup.json";
-        // 1. Java object to JSON file
-//        BackupSeries backupSeries = new BackupSeries(series);
-//
-        File file = new File(filePath);
+        //create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
 
 
-        Writer writer = new FileWriter(file);
-        gson.toJson(series, writer);
-        String testserie = gson.toJson(series, Serie.class);
-        if (testserie.contains("s")){
+        //configure Object mapper for pretty print
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 
-        }
-        writer.flush(); //flush data to file   <---
-        writer.close(); //close write          <---
-        System.out.println("Series is backuped on: " + filePath);
-    }
+        //writing to console, can write to any output stream such as file
+        StringWriter stringEmp = new StringWriter();
 
-    private SeasonTheMovieDB importSeasonFromJsonFile(String file) {
         try {
-            bufferedReader = new BufferedReader(new FileReader(file));
-            SeasonTheMovieDB seasonTheMovieDB = gson.fromJson(bufferedReader, SeasonTheMovieDB.class);
-            return seasonTheMovieDB;
+            ObjectWriter writer = objectMapper.writer();
+            writer.writeValue(Paths.get(filePath).toFile(), series);
+//            objectMapper.writeValue(stringEmp, series);
 
-        } catch (FileNotFoundException e) {
+
+//        System.out.println("seriesJSON is\n"+stringEmp);
+//        return String.valueOf(stringEmp);
+            System.out.println("Series is backuped on: " + filePath);
+
+        } catch (JsonGenerationException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
-    }
 
-    private void importSeriesFromJsonFile(String file) {
+    }
+//        private SeasonTheMovieDB importSeasonFromJsonFile(String file) {
+//        try {
+//            bufferedReader = new BufferedReader(new FileReader(file));
+//            SeasonTheMovieDB seasonTheMovieDB = gson.fromJson(bufferedReader, SeasonTheMovieDB.class);
+//            return seasonTheMovieDB;
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+
+    private void importSeriesFromJsonFile(String file) throws IOException {
 //        String filePath = new File("").getAbsolutePath();
 //        filePath += "/src/main/resources/static/json/" + "seriesbackup.json";
 
 
         String filePath = new File("").getAbsolutePath();
         filePath += "/src/main/resources/static/json/" + file;
-        try {
-            bufferedReader = new BufferedReader(new FileReader(filePath));
-             List<Serie> backup = gson.fromJson(bufferedReader, Serie.class);
 
-            for (Serie serie : backup) {
-                series.add(serie);
-            }
-//            BackupSeries backupSeries = gson.fromJson(bufferedReader, BackupSeries.class);
-//            for (Serie serie : backupSeries.getBackSeries()) {
-//                serie.add(serie);
-//                System.out.println("Imported serie: " + serie.getTitle());
-//            }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        Type SERIE_TYPE = new TypeToken<List<Serie>>() {
+        }.getType();
+        Gson gson = new Gson();
+        JsonReader reader = new JsonReader(new FileReader(filePath));
+        List<Serie> data = gson.fromJson(reader, SERIE_TYPE); // contains the whole reviews list
+
+        series.addAll(data);
+        for (Serie serie : series) {
+            System.out.println("Serie: "+ serie.getTitle() + " seasons: "+serie.getAmountOfSeasons() +" Episodes: "+ serie.getAmountOfEpisodes());
         }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+//JSON file to Java object
+//        series = mapper.readValue(new File(filePath), Serie.class);
+
+
+//            ObjectReader objectReader = mapper.reader().forType(new TypeReference<List<Serie>>(){});
+//            List<Serie> result = objectReader.readValue(filePath);
+
+
+//            List<Serie> myObjects = mapper.readValue(filePath, new TypeReference<List<Serie>>(){});
+//        for (Serie myObject : myObjects) {
+//            System.out.println("it worked");
+//            System.out.println(myObject.toString());
+//        }
+
+
+//        try {
+//            bufferedReader = new BufferedReader(new FileReader(filePath));
+//            List<Serie> backup = (List<Serie>) gson.fromJson(bufferedReader, Serie.class);
+//
+//            for (Serie serie : backup) {
+//                series.add(serie);
+//            }
+////            BackupSeries backupSeries = gson.fromJson(bufferedReader, BackupSeries.class);
+////            for (Serie serie : backupSeries.getBackSeries()) {
+////                serie.add(serie);
+////                System.out.println("Imported serie: " + serie.getTitle());
+//////            }
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
     }
 

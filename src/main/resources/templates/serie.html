@@ -60,20 +60,20 @@
     </tr>
 
 
-<!--             <tr th:each="episode : ${serie.getSeasons().get(0).getEpisodes()}">-->
-<!--                <td>-->
-<!--                    <a th:text="${episode.getEpisodeNumber()}"></a>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <a th:text="${episode.getName()}"></a>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <a th:text="${episode.getReleaseDate()}"></a>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <a th:text="${episode.getTmdbID()}"></a>-->
-<!--                </td>-->
-<!--                <td>-->
+             <tr th:each="episode : ${serie.getSeasons().get(0).getEpisodes()}">
+                <td>
+                    <a th:text="${episode.getEpisodeNumber()}"></a>
+                </td>
+                <td>
+                    <a th:text="${episode.getName()}"></a>
+                </td>
+                <td>
+                    <a th:text="${episode.getReleaseDate()}"></a>
+                </td>
+                <td>
+                    <a th:text="${episode.getTmdbID()}"></a>
+                </td>
+                <td>
                     <form action="/delete" method="post">
                         <input type="Submit" value="delete">
                     </form>
