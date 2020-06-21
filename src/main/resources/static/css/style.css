@@ -190,14 +190,12 @@ input{
     padding: 0;
     width: auto;
 }
-info-text{
+.info-text-tile{
+    padding-left: 1rem;
+    padding-top: 370px;
     background-color: rgba(29,29,29,0);
-    font-size: 18px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    text-shadow: 0 2px 1px rgba(0, 0, 0, .3);
-
+    font-size: 30px;
+    text-shadow: 2px 2px 1px black;
 }
 
 .grid {
@@ -410,6 +408,12 @@ info-text{
         }
         .grid { grid-template-columns: repeat(5, 1fr); }
     }
-
+    @media all and (min-width: 1910px) {
+        .position-mid{
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+        .grid { grid-template-columns: repeat(6, 1fr); }
+    }
 
 }
