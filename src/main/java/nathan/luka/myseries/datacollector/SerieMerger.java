@@ -1,21 +1,17 @@
-package nathan.luka.myseries.model;
-
-import com.google.gson.Gson;
+package nathan.luka.myseries.datacollector;
+import nathan.luka.myseries.model.Episode;
+import nathan.luka.myseries.model.Season;
+import nathan.luka.myseries.model.Serie;
 import nathan.luka.myseries.model.gjson.SeasonTheMovieDB;
 import nathan.luka.myseries.model.gjson.SerieTheMovieDB;
-
-import java.io.BufferedReader;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.*;
 
 public class SerieMerger implements Callable<Serie> {
-    private SerieTheMovieDB serieTheMovieDB;
-    private List<SeasonTheMovieDB> seasonTheMovieDBList;
-    Gson gson = new Gson();
-    BufferedReader bufferedReader;
-    private Serie result;
+    private final SerieTheMovieDB serieTheMovieDB;
+    private final List<SeasonTheMovieDB> seasonTheMovieDBList;
+    private final Serie result;
 
     public SerieMerger(SerieTheMovieDB serieTheMovieDB, List<SeasonTheMovieDB> seasonTheMovieDBList) {
         this.serieTheMovieDB = serieTheMovieDB;
@@ -25,11 +21,13 @@ public class SerieMerger implements Callable<Serie> {
         mergeSeasonsWithSerie();
     }
 
-
+    /**
+     * This a nested class to preform asyn methodes
+     */
     class MergeSeasonWithSerie implements Runnable {
-        private SeasonTheMovieDB seasonTheMovieDB;
-        private SerieTheMovieDB serieTheMovieDB;
-        private Serie result;
+        private final SeasonTheMovieDB seasonTheMovieDB;
+        private final SerieTheMovieDB serieTheMovieDB;
+        private final Serie result;
 
         public MergeSeasonWithSerie(SeasonTheMovieDB seasonTheMovieDB, SerieTheMovieDB serieTheMovieDB, Serie serie) {
             this.seasonTheMovieDB = seasonTheMovieDB;
@@ -38,7 +36,9 @@ public class SerieMerger implements Callable<Serie> {
             run();
         }
 
-
+        /**
+         * Extracts seasons &  episodes from seasonTheMovieDBList and adds it to result.
+         */
         public void run() {
             if (Objects.equals(serieTheMovieDB.getId(), seasonTheMovieDB.getEpisodes().get(0).getShowId())) {
                 System.out.println("ID match found " + seasonTheMovieDB.getEpisodes().get(0).getShowId());
@@ -56,7 +56,10 @@ public class SerieMerger implements Callable<Serie> {
     }
 
 
-    //adds seasons to serie
+    /**
+     * This method provides the nested MergeSeasonWithSerie.class with the needed params to add seasons to result, asyn to speed up the progress.
+     *
+     */
     public void mergeSeasonsWithSerie() {
         ExecutorService executor = Executors.newFixedThreadPool(seasonTheMovieDBList.size());
         for (int i = 0; i < seasonTheMovieDBList.size(); i++) {
@@ -64,6 +67,9 @@ public class SerieMerger implements Callable<Serie> {
         }
     }
 
+    /**
+     * Extracts all data from serieTheMovieDB : SerieTheMovieDB to result : Serie
+     */
     public void convertSerieTheMovieDBToSerie() {
         result.setThemoviedbSerieID(serieTheMovieDB.getId());
         result.setTitle(serieTheMovieDB.getName());
@@ -77,6 +83,11 @@ public class SerieMerger implements Callable<Serie> {
         result.setGridImageURL(serieTheMovieDB.getPosterPath());
     }
 
+    /**
+     *  Extracts all data from SeasonTheMovieDB.class to Season
+     * @param seasonTheMovieDB imported class from themoviedb
+     * @return Season
+     */
     public Season convertSeasonTheMovieDBToSeason(SeasonTheMovieDB seasonTheMovieDB) {
         return new Season(seasonTheMovieDB.getName(), seasonTheMovieDB.getSeasonNumber(), result.getThemoviedbSerieID(), seasonTheMovieDB.getEpisodes().size());
     }

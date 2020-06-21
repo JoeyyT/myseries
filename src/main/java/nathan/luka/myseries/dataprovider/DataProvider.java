@@ -1,124 +1,70 @@
 package nathan.luka.myseries.dataprovider;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import nathan.luka.myseries.datacollector.SerieCollector;
 import nathan.luka.myseries.model.*;
-import nathan.luka.myseries.model.gjson.Episode;
-import nathan.luka.myseries.model.gjson.SeasonTheMovieDB;
-import nathan.luka.myseries.model.gjson.SerieTheMovieDB;
+
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.*;
 
 public class DataProvider {
     private static DataProvider dataProvider;
-
     private final HashMap<String, User> users;
     private final ArrayList<Serie> series;
-    private final ArrayList<SerieTheMovieDB> serieGjsonlist;
-    Gson gson = new Gson();
-    BufferedReader bufferedReader;
-    private static int counter;
 
     public DataProvider() {
-
         users = new HashMap<String, User>();
         series = new ArrayList<>();
 
-        serieGjsonlist = new ArrayList<>();
         init();
         init2();
-        try {
-            importSeriesFromJsonFile("series_backup.json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static DataProvider getInstance() {
         if (dataProvider == null) {
             dataProvider = new DataProvider();
-            System.out.println("new dataprovider instance");
         }
         return dataProvider;
     }
 
     private void init2() {
+        try {
+            getSeriesFromJsonFile("series_backup.json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        List<String> jsonSerieFileNames = new ArrayList<>();
-        jsonSerieFileNames.add("tokyoghoul2014.json");
-        jsonSerieFileNames.add("vikings.json");
-        jsonSerieFileNames.add("gameofthrones.json");
-        jsonSerieFileNames.add("supernatural.json");
-        jsonSerieFileNames.add("theflash.json");
-        jsonSerieFileNames.add("hunterxhunter2011.json");
+        List<SerieInfo> serieInfoList = new ArrayList<>();
+//        serieInfoList.add(new SerieInfo(456, 3, 3)); //the simpsons
+//        serieInfoList.add(new SerieInfo(44217, 1, 3));  //vikings max season = 6
+//        serieInfoList.add(new SerieInfo(1622, 1, 3));    //supernatural
+//        serieInfoList.add(new SerieInfo(60735, 6, 3));    //the flash
+//        serieInfoList.add(new SerieInfo(1399, 8, 3));    //got
+//        serieInfoList.add(new SerieInfo(46298, 3, 3));    //hxh2011
+//        serieInfoList.add(new SerieInfo(61374, 4, 3));    //tokyo ghoul 2014
+//        serieInfoList.add(new SerieInfo(62710, 5, 3));    // Blindspot (2015)
+//        serieInfoList.add(new SerieInfo(48866, 2, 3));    // The 100 (2014)
+//        serieInfoList.add(new SerieInfo(60625, 4, 3));    // Rick and Morty (2013)
+        serieInfoList.add(new SerieInfo(1434, 1, 3));    // Family Guy (1999)
 
-//        bulkImportJsonToSerieGjsonList(jsonSerieFileNames);
-        List<String> jsonSeasonFileNames = new ArrayList<>();
-        jsonSeasonFileNames.add("tokyoghoul2014s1.json");
-        jsonSeasonFileNames.add("tokyoghoul2014s2.json");
-        jsonSeasonFileNames.add("tokyoghoul2014s3.json");
-        jsonSeasonFileNames.add("tokyoghoul2014s4.json");
-        jsonSeasonFileNames.add("vikingss1.json");
-        jsonSeasonFileNames.add("vikingss2.json");
-        jsonSeasonFileNames.add("vikingss3.json");
-        jsonSeasonFileNames.add("vikingss4.json");
-        jsonSeasonFileNames.add("vikingss5.json");
-        jsonSeasonFileNames.add("vikingss6.json");
-        jsonSeasonFileNames.add("theflashs1.json");
-
-
-//        bulkImportSeasonJsonToSerieGjsonList(jsonSeasonFileNames);
-//        bulkImportJsonToSerieGjsonList(jsonSerieFileNames);
-
-//        testData();
-//        SerieCollector serieCollector = new SerieCollector();
-
-        List<String> stringList = new ArrayList<>();
-        stringList.add("https://api.themoviedb.org/3/tv/1622?api_key=8acc85d41e6a21f84c2651c11e9453c7&language=en-US");
-        stringList.add("https://api.themoviedb.org/3/tv/60735/season/1?api_key=8acc85d41e6a21f84c2651c11e9453c7&language=en-US");
-
-        System.out.println("syn1" + System.currentTimeMillis());
-
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-
-
-        //Load API data
-//        executor.execute(this::test);
-//        test();
-//        for (int i = 0; i < 20; i++) {
-//            System.out.println("xzzzserieGjsonlist.size: " + serieGjsonlist.size());
-//        }
-//
-//        System.out.println("syn2" + System.currentTimeMillis());
+        getSeriesFromThemoviedb(serieInfoList);
     }
 
-    public void test() {
-        ExecutorService executor = Executors.newFixedThreadPool(5);
-        List<SerieInfo> serieInfoList = new ArrayList<>();
-        serieInfoList.add(new SerieInfo(456, 1, 3)); //the simpsons
-        serieInfoList.add(new SerieInfo(44217, 1, 3));  //vikings max season = 6
-        serieInfoList.add(new SerieInfo(1622, 1, 3));    //supernatural
-        serieInfoList.add(new SerieInfo(60735, 6, 3));    //the flash
-        serieInfoList.add(new SerieInfo(1399, 8, 3));    //got
-        serieInfoList.add(new SerieInfo(46298, 3, 3));    //hxh2011
-        serieInfoList.add(new SerieInfo(61374, 4, 3));    //tokyo ghoul 2014
-        serieInfoList.add(new SerieInfo(62710, 5, 3));    // Blindspot (2015)
-        serieInfoList.add(new SerieInfo(48866, 2, 3));    // The 100 (2014)
-        serieInfoList.add(new SerieInfo(60625, 4, 3));    // Rick and Morty (2013)
+    /**
+     * Gets serie(s) from https://www.themoviedb.org/
+     */
 
+    public void getSeriesFromThemoviedb(List<SerieInfo> serieInfoList) {
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+
+        serieInfoList = filerDuplicates(serieInfoList);
 
         for (int i = 0; i < serieInfoList.size(); i++) {
             //Batch importing series
@@ -130,16 +76,26 @@ public class DataProvider {
                 Future<Serie> future4 = executor.submit(new SerieCollector(serieInfoList.get(i + 4).getId(), serieInfoList.get(i).getAmountOfSeasons(), serieInfoList.get(i + 4).getOption()));
 
                 try {
+
+                    System.out.println("Got: " + future.get().getTitle() + " from: " + "www.themoviedb.org");
                     series.add(future.get());
+
+                    System.out.println("Got: " + future1.get().getTitle() + " from: " + "www.themoviedb.org");
                     series.add(future1.get());
+
+                    System.out.println("Got: " + future2.get().getTitle() + " from: " + "www.themoviedb.org");
                     series.add(future2.get());
+
+                    System.out.println("Got: " + future3.get().getTitle() + " from: " + "www.themoviedb.org");
                     series.add(future3.get());
+
+                    System.out.println("Got: " + future4.get().getTitle() + " from: " + "www.themoviedb.org");
                     series.add(future4.get());
+
+
                     //when completed update the for-loop
                     i += 5;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
 
@@ -148,120 +104,58 @@ public class DataProvider {
                 Future<Serie> future = executor.submit(new SerieCollector(serieInfoList.get(i).getId(), serieInfoList.get(i).getAmountOfSeasons(), serieInfoList.get(i).getOption()));
 
                 try {
-                    System.out.println(future.get().getTitle() + " hij komt gwn door");
+                    System.out.println("Got: " + future.get().getTitle() + " from: " + "www.themoviedb.org");
                     series.add(future.get());
-                    System.out.println("serie size.size: " + series.size());
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    public void test(Future future) throws ExecutionException, InterruptedException {
+        for (int i = 0; i < series.size(); i++) {
+            if (future.get().equals(series.get(i))) {
+
+            }
+            if (future.get().equals(series.get(i))) {
 
             }
         }
-
     }
 
+    /**
+     * This method removes any requests if they are found to be already exisiting or don't add a new season.
+     *
+     * @param serieInfoList
+     * @return List<SerieInfo> serieInfoList
+     */
+    public List<SerieInfo> filerDuplicates(List<SerieInfo> serieInfoList) {
+        for (int i = 0; i < serieInfoList.size(); i++) {
+            for (Serie serie : series) {
 
-    public void testData() {
-        for (SerieTheMovieDB serieTheMovieDB : serieGjsonlist) {
-            System.out.println(serieTheMovieDB.getName());
-            List<SeasonTheMovieDB> seasonTheMovieDB = serieTheMovieDB.getSeasonTheMovieDBS();
-            for (SeasonTheMovieDB seasonTheMovieDB1 : seasonTheMovieDB) {
-                List<Episode> episode = seasonTheMovieDB1.getEpisodes();
-                System.out.println(seasonTheMovieDB1.getName() + " season: " + seasonTheMovieDB1.getSeasonNumber());
-                for (int i = 0; i < episode.size(); i++) {
-//                        System.out.println(serieGjson.getSeasons().get(0).getEpisodes().get(i).getEpisodeNumber() + ": ");
-                    System.out.println(episode.get(i).getEpisodeNumber() + ": " + episode.get(i).getName());
+                if (serieInfoList.get(i).getId() == serie.getThemoviedbSerieID()) {
+                    //found a match
+
+                    if (serieInfoList.get(i).getAmountOfSeasons() <= serie.getSeasons().size()) {
+                        //then nothing new will be added
+                        serieInfoList.remove(i);
+                    }
                 }
             }
         }
+        return serieInfoList;
     }
 
-//    private void bulkImportJsonToSerieGjsonList(List<String> listOfJsonFileNames) {
-//        if (listOfJsonFileNames != null) {
-//            String filePath = new File("").getAbsolutePath();
-//            for (String listOfJsonFileName : listOfJsonFileNames) {
-//                String strNew = filePath + "/src/main/resources/static/json/" + listOfJsonFileName;
-//                SerieTheMovieDB serieTheMovieDB = importSerieGjsonFromJsonFile(strNew);
-//
-//                if (serieTheMovieDB != null) {
-//                    serieGjsonlist.add(serieTheMovieDB);
-//                    List<Season> tempSeasons = new ArrayList<>();
-//                    for (int i = 0; i < serieTheMovieDB.getSeasonTheMovieDBS().size(); i++) {
-//                        SeasonTheMovieDB importedSeasonTheMovieDB = serieTheMovieDB.getSeasonTheMovieDBS().get(i);
-//                        Season tempSeason = new Season(importedSeasonTheMovieDB.getName(), importedSeasonTheMovieDB.getSeasonNumber(), serieTheMovieDB.getId());
-//                        tempSeasons.add(tempSeason);
-//                    }
-//                    series.add(new Serie(serieTheMovieDB.getName(), serieTheMovieDB.getNumberOfSeasons(),
-//                            serieTheMovieDB.getNumberOfEpisodes(), tempSeasons, serieTheMovieDB.getGenres(),
-//                            serieTheMovieDB.getId(), serieTheMovieDB.getOverview(), users.get("luka"), serieTheMovieDB.getStatus()));
-//                }
-//            }
-//            for (SerieTheMovieDB serieTheMovieDB : serieGjsonlist) {
-//                System.out.println("Title: " + serieTheMovieDB.getName() + " | ID: " + serieTheMovieDB.getId() + " | Number of seasons:  " + serieTheMovieDB.getNumberOfSeasons() + " | Number of episodes: " + serieTheMovieDB.getNumberOfEpisodes());
-//            }
-//
-//        }
-//    }
-
-//    private void bulkImportSeasonJsonToSerieGjsonList(List<String> listOfJsonFileNames) {
-//        if (listOfJsonFileNames != null) {
-//            String filePath = new File("").getAbsolutePath();
-//            for (String listOfJsonFileName : listOfJsonFileNames) {
-//                String strNew = filePath + "/src/main/resources/static/json/" + listOfJsonFileName;
-//                SeasonTheMovieDB seasonTheMovieDB = importSeasonFromJsonFile(strNew);
-//
-//                if (seasonTheMovieDB != null) {
-//                    System.out.println("Season not null");
-//                    for (int i = 0; i < serieGjsonlist.size(); i++) {
-//
-//
-//                        if (Objects.equals(serieGjsonlist.get(i).getId(), seasonTheMovieDB.getEpisodes().get(0).getShowId())) {
-//                            System.out.println("ID match found " + seasonTheMovieDB.getEpisodes().get(0).getShowId());
-//                            //Season is of the same Serie.
-//                            boolean seasonAlreadyExists = false;
-//                            List<SeasonTheMovieDB> seasonTheMovieDBFromSeriesGjsonList = serieGjsonlist.get(i).getSeasonTheMovieDBS();
-//
-//
-//                            for (int j = 0; j < seasonTheMovieDBFromSeriesGjsonList.size(); j++) {
-//                                if (Objects.equals(seasonTheMovieDB.getAirDate(), seasonTheMovieDBFromSeriesGjsonList.get(j).getAirDate())) {
-//                                    seasonAlreadyExists = true;
-//                                    if (seasonTheMovieDBFromSeriesGjsonList.get(j).getEpisodes().isEmpty() || seasonTheMovieDBFromSeriesGjsonList.get(j).getEpisodes().size() < seasonTheMovieDB.getEpisodes().size()) {
-//                                        System.out.println("serieGjsonSeason is leeg");
-//                                        serieGjsonlist.get(i).getSeasonTheMovieDBS().set(j, seasonTheMovieDB);
-//                                    }
-//                                }
-//                            }
-//                            if (!seasonAlreadyExists) {
-//                                serieGjsonlist.get(i).getSeasonTheMovieDBS().add(seasonTheMovieDB);
-////                                System.out.println("Added season:" + season.getSeasonNumber() + " for serie:" + serieGjson.getName());
-//                            }
-//                        }
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-
-    private SerieTheMovieDB importSerieGjsonFromJsonFile(String file) {
-        try {
-            bufferedReader = new BufferedReader(new FileReader(file));
-            SerieTheMovieDB serieTheMovieDB = gson.fromJson(bufferedReader, SerieTheMovieDB.class);
-            return serieTheMovieDB;
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    /**
+     * This method makes a backup of the serie list
+     */
     public void backupSeriesToJsonFile() {
         String filePath = new File("").getAbsolutePath();
 
         filePath += "/src/main/resources/static/json/" + "series_backup.json";
         //create ObjectMapper instance
         ObjectMapper objectMapper = new ObjectMapper();
-
 
         //configure Object mapper for pretty print
         objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
@@ -272,90 +166,33 @@ public class DataProvider {
         try {
             ObjectWriter writer = objectMapper.writer();
             writer.writeValue(Paths.get(filePath).toFile(), series);
-//            objectMapper.writeValue(stringEmp, series);
-
-
-//        System.out.println("seriesJSON is\n"+stringEmp);
-//        return String.valueOf(stringEmp);
-            System.out.println("Series is backuped on: " + filePath);
-
-        } catch (JsonGenerationException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (JsonParseException e) {
-            e.printStackTrace();
+            System.out.println("Series backup: series_backup.json at: " + filePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
-//        private SeasonTheMovieDB importSeasonFromJsonFile(String file) {
-//        try {
-//            bufferedReader = new BufferedReader(new FileReader(file));
-//            SeasonTheMovieDB seasonTheMovieDB = gson.fromJson(bufferedReader, SeasonTheMovieDB.class);
-//            return seasonTheMovieDB;
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 
-    private void importSeriesFromJsonFile(String file) throws IOException {
-//        String filePath = new File("").getAbsolutePath();
-//        filePath += "/src/main/resources/static/json/" + "seriesbackup.json";
-
-
+    /**
+     * This method get series from a json file and adds it to the series list
+     *
+     * @param file
+     * @throws IOException
+     */
+    private void getSeriesFromJsonFile(String file) throws IOException {
+        System.out.println("Before : " + series.size());
         String filePath = new File("").getAbsolutePath();
         filePath += "/src/main/resources/static/json/" + file;
 
-
         Type SERIE_TYPE = new TypeToken<List<Serie>>() {
         }.getType();
+
         Gson gson = new Gson();
         JsonReader reader = new JsonReader(new FileReader(filePath));
         List<Serie> data = gson.fromJson(reader, SERIE_TYPE); // contains the whole reviews list
 
         series.addAll(data);
-        for (Serie serie : series) {
-            System.out.println("Serie: "+ serie.getTitle() + " seasons: "+serie.getAmountOfSeasons() +" Episodes: "+ serie.getAmountOfEpisodes());
-        }
-
-        ObjectMapper mapper = new ObjectMapper();
-
-//JSON file to Java object
-//        series = mapper.readValue(new File(filePath), Serie.class);
-
-
-//            ObjectReader objectReader = mapper.reader().forType(new TypeReference<List<Serie>>(){});
-//            List<Serie> result = objectReader.readValue(filePath);
-
-
-//            List<Serie> myObjects = mapper.readValue(filePath, new TypeReference<List<Serie>>(){});
-//        for (Serie myObject : myObjects) {
-//            System.out.println("it worked");
-//            System.out.println(myObject.toString());
-//        }
-
-
-//        try {
-//            bufferedReader = new BufferedReader(new FileReader(filePath));
-//            List<Serie> backup = (List<Serie>) gson.fromJson(bufferedReader, Serie.class);
-//
-//            for (Serie serie : backup) {
-//                series.add(serie);
-//            }
-////            BackupSeries backupSeries = gson.fromJson(bufferedReader, BackupSeries.class);
-////            for (Serie serie : backupSeries.getBackSeries()) {
-////                serie.add(serie);
-////                System.out.println("Imported serie: " + serie.getTitle());
-//////            }
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
+        System.out.println("After : " + series.size());
     }
 
     private void init() {
