@@ -108,16 +108,16 @@ public class DataProvider {
     public void test() {
         ExecutorService executor = Executors.newFixedThreadPool(5);
         List<SerieInfo> serieInfoList = new ArrayList<>();
-//        serieInfoList.add(new SerieInfo(456, 0, 1)); //the simpsons
+        serieInfoList.add(new SerieInfo(456, 1, 3)); //the simpsons
         serieInfoList.add(new SerieInfo(44217, 1, 3));  //vikings max season = 6
-//        serieInfoList.add(new SerieInfo(1622, 0, 1));    //supernatural
-//        serieInfoList.add(new SerieInfo(60735, 6, 3));    //the flash
-//        serieInfoList.add(new SerieInfo(1399, 8, 3));    //got
-//        serieInfoList.add(new SerieInfo(46298, 3, 3));    //hxh2011
-//        serieInfoList.add(new SerieInfo(61374, 4, 3));    //tokyo ghoul 2014
-//        serieInfoList.add(new SerieInfo(62710, 5, 3));    // Blindspot (2015)
+        serieInfoList.add(new SerieInfo(1622, 1, 3));    //supernatural
+        serieInfoList.add(new SerieInfo(60735, 6, 3));    //the flash
+        serieInfoList.add(new SerieInfo(1399, 8, 3));    //got
+        serieInfoList.add(new SerieInfo(46298, 3, 3));    //hxh2011
+        serieInfoList.add(new SerieInfo(61374, 4, 3));    //tokyo ghoul 2014
+        serieInfoList.add(new SerieInfo(62710, 5, 3));    // Blindspot (2015)
         serieInfoList.add(new SerieInfo(48866, 2, 3));    // The 100 (2014)
-//        serieInfoList.add(new SerieInfo(60625, 4, 3));    // Rick and Morty (2013)
+        serieInfoList.add(new SerieInfo(60625, 4, 3));    // Rick and Morty (2013)
 
 
         for (int i = 0; i < serieInfoList.size(); i++) {
