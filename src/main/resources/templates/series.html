@@ -16,7 +16,7 @@
 
     <form action="" th:action="@{/series}" th:object="${perie}" th:method="post" method="post">
         <label for="title">add new serie</label>
-        <input type="text" id="title" name="title" autofocus="autofocus"/>
+        <input type="text" id="series" name="title" autofocus="autofocus"/>
     </form>
 
     <form action="" th:action="@{/sorteer}" th:method="get" method="get">
@@ -25,8 +25,8 @@
     </form>
 
     <form action="" th:action="@{/zoekFunctie}" th:method="get" method="get">
-        <label>Sorteer hier</label>
-        <input type="text" id="zoek" value="zoek hier" name="zoek hier" autofocus="autofocus"/>
+        <label>Zoek hier</label>
+        <input type="text" id="title" value="zoek hier" name="title" autofocus="autofocus"/>
     </form>
 
     <table>

@@ -42,14 +42,18 @@ public class SeriesController {
 //        return "/eigenseries";
     }
 // TODO: 15/06/2020 sorteer 
-//    @GetMapping("/zoekFunctie")
-//    public String zoek(Model model, HttpSession httpSession, String seriestring){
-//        if (!isLoggedIn(httpSession)) {
-//            return "/login";
-//        }
-//        model.addAttribute("serie", this.model.findSerieByTitle(seriestring));
-//        return "/serie";
-//    }
+    @GetMapping("/zoekFunctie")
+    public String zoek(@RequestParam(value = "title") String title, HttpSession httpSession, Model model){
+        if (!isLoggedIn(httpSession)) {
+            return "/login";
+        }
+        Serie serie = this.model.findSerieByTitle(title);
+        if (serie!=null){
+            model.addAttribute("serie", this.model.findSerieByTitle(title));
+            return "/serie";
+        }
+      return "/series";
+    }
 
     @GetMapping("/eigenseries")
     public String getEigenSeries(Model model, HttpSession httpSession) {
@@ -124,7 +128,7 @@ public class SeriesController {
         return new RedirectView("/series");
     }
 
-    // TODO: 14/06/2020 niet werkend
+
     @PostMapping("/serie/update/{id}")
     public RedirectView setSerieTitle(@PathVariable("id") int id, String updated_name, HttpSession httpSession) {
         if (!isLoggedIn(httpSession)) {
