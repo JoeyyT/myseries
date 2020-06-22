@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @Controller
-
+@RequestMapping("/")
 public class SeriesController {
     private final DataProvider model = DataProvider.getInstance();
+    private HttpSession httpSession;
+    private int season;
+    private int episode;
+    private boolean watched;
+    private int id;
 
     //load all series
 
@@ -121,6 +125,17 @@ public class SeriesController {
         }
         return null;
     }
+
+    @GetMapping("/serie/{id}/{season}/{episode}")
+    public String setEpisodeWatched(@PathVariable int id, @PathVariable int season, HttpSession httpSession, @PathVariable int episode) {
+        User user = model.getUserByUsername((String) httpSession.getAttribute("username"));
+        Serie serie = model.getSerieById(id);
+//        @RequestParam("episode") int episode
+        System.out.println("jp");
+        user.setEpisodeWatched(serie.getThemoviedbSerieID(), season, episode);
+        return "redirect: /serie"+ "/" + id + "/" + season;
+    }
+
 
     @PostMapping("/serie/delete/{id}")
     public RedirectView removeSerieTitle(@PathVariable("id") int id, HttpSession httpSession) {

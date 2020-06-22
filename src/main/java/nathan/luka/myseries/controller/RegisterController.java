@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 @Controller
-
+@RequestMapping("/")
 public class RegisterController {
     private final DataProvider model = DataProvider.getInstance();
 
@@ -69,6 +69,7 @@ public class RegisterController {
                 e.printStackTrace();
             }
             httpSession.setAttribute("username", user.getUserName());
+            httpSession.setAttribute("user", user);
             return "redirect:/series";
         }
         model.addAttribute("onjuisteGegevens", true);

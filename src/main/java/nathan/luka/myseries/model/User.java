@@ -1,5 +1,9 @@
 package nathan.luka.myseries.model;
 
+import nathan.luka.myseries.model.usermetadata.UserSerieMetaData;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class User {
@@ -15,6 +19,8 @@ public class User {
 
     private Set<Serie> serie;
 
+    private List<UserSerieMetaData> userSerieMetaDataList;
+
     private Set<Review> reviews;
 
     private boolean loggedIn;
@@ -24,12 +30,32 @@ public class User {
 
 
     public User(String password, String userName) {
+        this.userSerieMetaDataList = new ArrayList<>();
         this.password = password;
         this.userName = userName;
         this.id = lastId;
         lastId++;
     }
 
+    public void addSerie(Serie serie){
+        userSerieMetaDataList.add(new UserSerieMetaData(serie));
+    }
+
+    public void setEpisodeWatched(Integer themoviedbSerieID, Integer seasonNumber, Integer episodeNumber){
+        for (int i = 0; i < userSerieMetaDataList.size(); i++) {
+            if (userSerieMetaDataList.get(i).getThemoviedbSerieID().equals(themoviedbSerieID)){
+                //match
+
+                if (!userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(seasonNumber).getUserEpisodeMetaDataList().get(episodeNumber).isWatched()){
+                    userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(seasonNumber).getUserEpisodeMetaDataList().get(episodeNumber).setWatched(true);
+                } else{
+                    userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(seasonNumber).getUserEpisodeMetaDataList().get(episodeNumber).setWatched(false);
+                }
+                System.out.println("gelukt niggah");
+            }
+        }
+
+    }
 
     public String getEmail() {
         return email;

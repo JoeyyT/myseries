@@ -21,11 +21,11 @@ public class Serie  {
     private final int id;
     @SerializedName("title")
     @Expose
-    private String title;  //d
+    private String title;
 
     @SerializedName("imageurl")
     @Expose
-    private String imageurl; //backdrop
+    private String imageurl;
 
     @SerializedName("gridImageURL")
     @Expose
@@ -33,7 +33,7 @@ public class Serie  {
 
     @SerializedName("amountOfEpisodes")
     @Expose
-    private Integer amountOfEpisodes; //d
+    private Integer amountOfEpisodes;
 
     @SerializedName("category")
     @Expose
@@ -45,19 +45,19 @@ public class Serie  {
 
     @SerializedName("amountOfSeasons")
     @Expose
-    private Integer amountOfSeasons; //d
+    private Integer amountOfSeasons;
 
     @SerializedName("status")
     @Expose
-    private String status; //d
+    private String status;
 
     @SerializedName("themoviedbSerieID")
     @Expose
-    private Integer themoviedbSerieID; //d
+    private Integer themoviedbSerieID;
 
     @SerializedName("description")
     @Expose
-    private String description; //d
+    private String description;
 
     @SerializedName("seasons")
     @Expose
@@ -66,10 +66,7 @@ public class Serie  {
     private double meanRating;
 
     private User user;
-    private int currentEP = 5;
-    private int maxEP = 10;
-    private int progress;
-    private boolean completed;
+
     public Serie() {
         this.seasons = new ArrayList<>();
         this.id = lastId;
@@ -112,9 +109,7 @@ public class Serie  {
     }
 
     public void init() {
-        currentEP = 5;
-        maxEP = 10;
-        progress = 50;
+
 //        progress = (currentEP / maxEP) * 100;
     }
 
@@ -222,37 +217,7 @@ public class Serie  {
         this.user = user;
     }
 
-    public int getCurrentEP() {
-        return currentEP;
-    }
 
-    public void setCurrentEP(int currentEP) {
-        this.currentEP = currentEP;
-    }
-
-    public int getMaxEP() {
-        return maxEP;
-    }
-
-    public void setMaxEP(int maxEP) {
-        this.maxEP = maxEP;
-    }
-
-    public int getProgress() {
-        return progress;
-    }
-
-    public void setProgress(int progress) {
-        this.progress = progress;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
 
     public Integer getThemoviedbSerieID() {
         return themoviedbSerieID;
@@ -286,16 +251,4 @@ public class Serie  {
         this.gridImageURL = gridImageURL;
     }
 
-    @Override
-//    @JsonValue
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("***** Employee Details *****\n");
-        sb.append("ID=" + getId() + "\n");
-        sb.append("Name=" + getTitle() + "\n");
-        sb.append("*****************************");
-
-        return sb.toString();
-
-    }
 }
