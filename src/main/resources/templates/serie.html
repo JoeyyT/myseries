@@ -27,64 +27,55 @@
 <!--<h1>progress: <span th:text="${serie.getProgress()}"></span> / 100</h1>-->
 <div class="position-mid">
     <div class="basic-info">
-        <li th:text="'Status: ' + ${serie.getStatus()}"> </li>
+        <li th:text="'Status: ' + ${serie.getStatus()}"></li>
         <li th:text="'Seasons: ' + ${serie.getAmountOfSeasons()}"></li>
         <li th:text="'Episodes: ' + ${serie.getAmountOfEpisodes()}"></li>
     </div>
-        <div class="description">
-            <h3>Description</h3>
-            <p th:text="${serie.getDescription()}"></p>
-
+    <div class="description">
+        <h3>Description</h3>
+        <p th:text="${serie.getDescription()}"></p>
     </div>
 
-<h2> Episodes</h2>
-<div class="season">
-    <div class="dropdown">
-        <button class="dropbtn">Dropdown</button>
-        <div class="dropdown-content">
-            <a href="#">Link 1</a>
-            <a href="#">Link 2</a>
-            <a href="#">Link 3</a>
+
+
+    <h2> Episodes</h2>
+    <div class="season">
+        <div class="dropdown">
+            <button class="dropbtn">Dropdown</button>
+            <div class="dropdown-content">
+                <tr th:each="s : ${serie.getSeasons()}">
+                    <a th:href="@{${s.getSeasonNumber()}}" th:text="'Season: '+ ${s.getSeasonNumber()}"></a>
+                </tr>
+            </div>
         </div>
     </div>
-
-
-
-</div>
     <table class="table">
-    <tr>
-        <th>Episode</th>
-        <th>Title</th>
-        <th>Release date</th>
-        <th>Watched</th>
-    </tr>
 
+        <tr th:each="episode : ${serie.getSeasons().get(season).getEpisodes()}">
+            <td>
+                <a th:text="${episode.getEpisodeNumber()}"></a>
+            </td>
+            <td>
+                <a th:text="${episode.getName()}"></a>
+            </td>
+            <td>
+                <a th:text="${episode.getReleaseDate()}"></a>
+            </td>
 
-             <tr th:each="episode : ${serie.getSeasons().get(0).getEpisodes()}">
-                <td>
-                    <a th:text="${episode.getEpisodeNumber()}"></a>
-                </td>
-                <td>
-                    <a th:text="${episode.getName()}"></a>
-                </td>
-                <td>
-                    <a th:text="${episode.getReleaseDate()}"></a>
-                </td>
-                <td>
-                    <a th:text="${episode.getTmdbID()}"></a>
-                </td>
-                <td>
-                    <form action="/delete" method="post">
-                        <input type="Submit" value="delete">
-                    </form>
-                </td>
-                <td>
-                    <form action="/delete" method="post">
-                        <input type="Text" value="Update">
-                    </form>
-                </td>
-            </tr>
-        </table>
-    <!--</div>-->
+<!--            th:if="${serie. == false}-->
+            <td>
+                <form  action="/watched" method="post">
+                    <input type="submit" value="watched">
+                </form>
+            </td>
+            <td>
+                <form action="/notwatched" method="post">
+                    <input type="Submit" value="delete">
+                </form>
+            </td>
+        </tr>
+
+    </table>
+
 </body>
 </html>

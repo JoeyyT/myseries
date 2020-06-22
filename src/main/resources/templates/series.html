@@ -35,7 +35,7 @@
     <div class="grid">
     <tr th:each="serie : ${series}">
         <div class="tile" >
-            <a th:href="'/serie/' + ${serie.getId()}">
+            <a th:href="'/serie/' + ${serie.getId()} + '/0'">
             <div class="tile image"  th:style="'background-image:url(' + ${serie.getGridImageURL()} + ');'" >
             </div>
             </a>

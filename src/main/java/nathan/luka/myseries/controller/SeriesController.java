@@ -109,8 +109,8 @@ public class SeriesController {
 
     //get a specific serie
 
-    @GetMapping("/serie/{id}")
-    public String getSerie(@PathVariable("id") int id, Model model, HttpSession httpSession) {
+    @GetMapping("/serie/{id}/{season}")
+    public String getSerie(@PathVariable("id") int id, Model model, HttpSession httpSession, @PathVariable("season")  int season) {
         if (!isLoggedIn(httpSession)) {
             return "redirect:/login";
         }

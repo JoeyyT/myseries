@@ -208,6 +208,11 @@ input{
 .table {
     color: black;
 }
+.table td{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 .basic-info{
     color: white;
     flex-wrap: wrap;
@@ -408,6 +413,7 @@ input{
         }
         .grid { grid-template-columns: repeat(5, 1fr); }
     }
+
     @media all and (min-width: 1910px) {
         .position-mid{
             margin-left: 15%;
