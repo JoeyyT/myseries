@@ -71,7 +71,7 @@ public class SeriesController {
 
     @GetMapping("/index")
     public String homeView(Model model) {
-        model.addAttribute("home_page", this.model.getSeries());
+        model.addAttribute("index_series", this.model.getSeries());
         return "index";
     }
 

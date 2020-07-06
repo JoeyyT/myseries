@@ -2,30 +2,47 @@
 
 <html lang=”en” xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+<script src="https://use.fontawesome.com/3249730d08.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
 <div th:replace="fragments/header.html :: header"></div>
 <!--navbar-->
 <div th:replace="fragments/topnav.html :: navbar"></div>
 
+
 <body>
 <section class="main-container">
-    <div class="location" id="home">
-        <h1 id="title">watch</h1>
-        <div class="box">
-            <a href=""><img
-                    src="img/deeznuts.jpg"
-                    alt=""></a>
-            <a href=""><img
-                    src="img/pokemon.jpg"
-                    alt=""></a>
-            <a href=""><img
-                    src="img/tokyo_ghoul.jpg"
-                    alt=""></a>
+        <div class="index-series" th:each="index_serie : ${index_series}">
+            <div class="slides">
+                <img th:src="${index_serie.getImageurl()}">
+                <div class="content">
+                    <h2 class="title" th:text="${index_serie.getTitle()}"></h2>
+                    <p class="title" th:text="${index_serie.getUser()}"></p>
+                    <a href="/register">
+                        <i class="fa fa-play" aria-hidden="true">
+                            Register Free Now!</i>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 
-
-
 </body>
 </html>
+
+
+<!--<div class="location" id="home">-->
+<!--    <h1 id="title">Welcome</h1>-->
+<!--    <div class="box">-->
+<!--        <a href=""><img-->
+<!--                src="img/deeznuts.jpg"-->
+<!--                alt=""></a>-->
+<!--        <a href=""><img-->
+<!--                src="img/pokemon.jpg"-->
+<!--                alt=""></a>-->
+<!--        <a href=""><img-->
+<!--                src="img/tokyo_ghoul.jpg"-->
+<!--                alt=""></a>-->
+<!--    </div>-->
+<!--</div>-->

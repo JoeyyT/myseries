@@ -32,18 +32,18 @@
             <th>delete</th>
             <th>update</th>
         </tr>
-        <tr th:each="pier : ${serie.getReview()}">
+        <tr th:each="series : ${serie.getReview()}">
             <td>
-                <a th:text="${pier.getUser()}"></a>
+                <a th:text="${series.getUser()}"></a>
             </td>
             <td>
-                <a th:text="${pier.getComment()}"></a>
+                <a th:text="${series.getComment()}"></a>
             </td>
             <td>
-                <a th:text="${pier.getRating()}"></a>
+                <a th:text="${series.getRating()}"></a>
             </td>
             <td>
-                <a th:text="${pier.getDate()}"></a>
+                <a th:text="${series.getDate()}"></a>
             </td>
             <td>
                 <form action="/delete" method="post">

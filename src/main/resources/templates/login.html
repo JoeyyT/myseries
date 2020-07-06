@@ -7,18 +7,19 @@
 <div th:replace="fragments/topnav.html :: navbar"></div>
 <title>Login page</title>
 <body>
-<h1>Login Page</h1>
-<p th:if="${onjuisteGegevens}" class="error">Invalid Username/Password</p>
-<form th:action="@{/login}" th:object="${login}" method="post">
-    <label for="userName">userName</label>
-    <input type="text" id="userName" name="userName" autofocus="autofocus" required />
-    <br />
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required/>
-    <br />
-    <input type="submit" value="Log In" />
-</form>
 
-<a href="/register">Dont have an account? Register here</a>
+<p th:if="${onjuisteGegevens}" class="error">Invalid Username/Password</p>
+
+<img id="register-background" src="img/img1.jpg" alt="Background image">
+<div class="form-wrap">
+    <form th:action="@{/login}" th:object="${login}" method="post">
+        <h1 id="register-title">Login</h1>
+        <input type="text" id="userName" placeholder="Gebruikersnaam" name="userName" autofocus="autofocus" required/>
+        <input type="password" id="password" placeholder="Wachtwoord" name="password" required/>
+        <input type="submit" value="Login"/>
+        <a href="/register"> Heb je geen Account? Klik dan hier!</a>
+    </form>
+</div>
+</body>
 </body>
 </html>

@@ -6,15 +6,15 @@
 <div th:replace="fragments/topnav.html :: navbar"></div>
 <title>Register page</title>
 <body>
-<h1>Register here</h1>
-<form th:action="@{/register}" th:object="${registerd}" method="post">
-    <label for="userName">userName</label>
-    <input type="text" id="userName" name="userName" autofocus="autofocus" required/>
-    <br/>
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required/>
-    <br/>
-    <input type="submit" value="Register"/>
-</form>
+<img id="register-background" src="img/img1.jpg" alt="Background image">
+<div class="form-wrap">
+    <form th:action="@{/register}" th:object="${registerd}" method="post">
+        <h1 id="register-title">Register here</h1>
+        <input type="text" id="userName" placeholder="Gebruikersnaam" name="userName" autofocus="autofocus" required/>
+        <input type="password" id="password" placeholder="Wachtwoord" name="password" required/>
+        <input type="submit" value="Register"/>
+        <a id="register-image" href="/login">Heb je al een Account? Login in hier</a>
+    </form>
+</div>
 </body>
 </html>

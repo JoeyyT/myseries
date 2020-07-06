@@ -1,4 +1,6 @@
-/* * = all items */
+
+
+
 * {
     font-family: 'Roboto', sans-serif;
     /* padding &  margin to the edges */
@@ -8,9 +10,11 @@
 }
 
 /* Mobile */
-
+/*nav bar*/
 body {
     font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    /*background: #111111;*/
 }
 
 nav {
@@ -46,9 +50,12 @@ a {
 }
 
 .logo {
-    color: #efefef;
+    color: #3AAFB9;
     font-size: 20px;
     font-weight: bold;
+}
+.logo a{
+    color: #3AAFB9;
 }
 
 /* Mobile Menu  everythiing < 480 px*/
@@ -204,4 +211,131 @@ a {
 }
 a{
      color: black;
- }
+}
+
+/*home page*/
+
+.section{
+    position: relative;
+}
+
+.container{
+    width: 100%;
+    height: 450px;
+    position: relative;
+}
+.slides{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    animation: fade 1s ease-in-out;
+}
+
+@keyframes fade {
+    to{
+        opacity: 1;
+    }
+    from{
+        opacity: 0;
+    }
+}
+
+.slides img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: brightness(80%);
+}
+
+.slides .content{
+    position: absolute;
+    left: 40%;
+    bottom: 30%;
+    color: aliceblue;
+    max-width: 400px;
+    text-shadow: 0 0 1px #000;
+}
+
+.content h2{
+    font-size: 3em;
+    letter-spacing: 2px;
+}
+
+.content p{
+    font-size: 1em;
+    line-height: 1.4;
+    margin: 10px 0;
+}
+
+.content a{
+    font-size: 2em;
+    display: inline-block;
+    text-decoration: none;
+    background: red;
+    padding: 10px 15px;
+}
+
+.content a:hover{
+    background: crimson;
+}
+
+/*Register*/
+#register-title{
+    text-align: center;
+    color: #3AAFB9;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+
+.form-wrap{
+    width: 320px;
+    background: #3e3d3d;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form-wrap input{
+   width: 100%;
+    background: none;
+    border: 1px solid #ffffff;
+    border-radius: 3px;
+    padding: 6px 15px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.form-wrap input[type="submit"]{
+    background: #bac675;
+    border: 8px;
+    cursor: pointer;
+    color: #eeeeee;
+}
+
+.form-wrap input[type="submit"]:hover{
+    background: #a4b15c;
+    transition: 0.6s;
+}
+
+.form-wrap a{
+    color: #a4b15c;
+    text-align: center;
+}
+
+#register-background{
+    rgba(0,0,0,0.65)
+    min-height: 100%;
+    min-width: 100%;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+

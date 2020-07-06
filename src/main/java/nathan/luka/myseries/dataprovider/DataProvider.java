@@ -36,28 +36,28 @@ public class DataProvider {
         addUser(nathan);
         addUser(theRealDeal);
 
-        Serie serie = new Serie("deez nuts", theRealDeal, "/img/deeznuts.jpg");
+        Serie serie = new Serie("deez nuts", theRealDeal, "/img/img1.jpg");
         serie.addReview(new Review("good movie about deez nuts", nathan));
         serie.addReview(new Review("ok", luka));
         serie.addReview(new Review("yup", theRealDeal));
 
 
-        Serie tokyo_ghoul = new Serie("Tokyo Ghoul", nathan, "/img/tokyo_ghoul.jpg");
+        Serie tokyo_ghoul = new Serie("Tokyo Ghoul", nathan, "/img/img2.jpg");
         tokyo_ghoul.addReview(new Review("ok", luka));
 
         Serie pokemon = new Serie("pokemon", luka, "/img/pokemon.jpg");
         pokemon.addReview(new Review("good movie", theRealDeal));
 
 
-        Serie deez_nuts2 = new Serie("deez nuts", theRealDeal, "/img/deeznuts.jpg");
+        Serie deez_nuts2 = new Serie("deez nuts", theRealDeal, "/img/img3.jpg");
         deez_nuts2.addReview(new Review("good movie about deez nuts", nathan));
         deez_nuts2.addReview(new Review("ok", luka));
         deez_nuts2.addReview(new Review("yup", theRealDeal));
 
-        Serie tokyo_ghoul2 = new Serie("Tokyo Ghoul", nathan, "/img/tokyo_ghoul.jpg");
+        Serie tokyo_ghoul2 = new Serie("Tokyo Ghoul", nathan, "/img/img4.jpg");
         tokyo_ghoul2.addReview(new Review("ok", luka));
 
-        Serie pokemon2 = new Serie("pokemon", luka, "/img/pokemon.jpg");
+        Serie pokemon2 = new Serie("pokemon", luka, "/img/img4.jpg");
         pokemon2.addReview(new Review("good movie", theRealDeal));
 
 
