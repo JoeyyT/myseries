@@ -6,10 +6,10 @@ public class UserEpisodeMetaData {
     private Integer seasonNumber;
     private Integer episodeNumber;
     private Integer tmdbID;
-    private boolean watched;
+    private Boolean watched;
     private Episode episode;
 
-    public UserEpisodeMetaData(Integer seasonNumber, Integer episodeNumber, Integer tmdbID, boolean watched) {
+    public UserEpisodeMetaData(Integer seasonNumber, Integer episodeNumber, Integer tmdbID, Boolean watched) {
         this.seasonNumber = seasonNumber;
         this.episodeNumber = episodeNumber;
         this.tmdbID = tmdbID;

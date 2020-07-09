@@ -9,7 +9,7 @@ import java.util.List;
 public class UserSeasonMetaData {
     private Integer seasonNumber;
     private Integer themoviedbSerieID;
-    private List<UserEpisodeMetaData> userEpisodeMetaDataList;
+    private final List<UserEpisodeMetaData> userEpisodeMetaDataList;
     private Serie serie;
     private Season season;
     private boolean watched;
@@ -27,7 +27,7 @@ public class UserSeasonMetaData {
         this.themoviedbSerieID = serie.getThemoviedbSerieID();
         this.userEpisodeMetaDataList = new ArrayList<>();
         for (int i = 0; i < season.getEpisodes().size(); i++) {
-            userEpisodeMetaDataList.add(i, new UserEpisodeMetaData(season.getEpisodes().get(i)));
+            userEpisodeMetaDataList.add(0, new UserEpisodeMetaData(season.getEpisodes().get(i)));
         }
     }
 
@@ -52,7 +52,5 @@ public class UserSeasonMetaData {
         return userEpisodeMetaDataList;
     }
 
-    public void setUserEpisodeMetaDataList(List<UserEpisodeMetaData> userEpisodeMetaDataList) {
-        this.userEpisodeMetaDataList = userEpisodeMetaDataList;
-    }
+
 }

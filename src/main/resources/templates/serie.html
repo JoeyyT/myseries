@@ -38,44 +38,51 @@
     </div>
 
 
-    <h2> Episodes</h2>
     <div class="season">
-        <div class="dropdown">
-            <button class="dropbtn">Dropdown</button>
-            <div class="dropdown-content">
-                <tr th:each="s : ${serie.getSeasons()}">
-                    <a th:href="@{${s.getSeasonNumber()}}" th:text="'Season: '+ ${s.getSeasonNumber()}"></a>
-                </tr>
-            </div>
-        </div>
+        <ul>
+            <li><h2> Episodes</h2></li>
+            <li class="floatright">
+                <div class="dropdown">
+                    <button class="dropbtn" th:text="'Season: ' + ${season}"></button>
+                    <div class="dropdown-content">
+                        <tr th:each="s : ${serie.getSeasons()}">
+                            <a th:href="@{${s.getSeasonNumber()}}" th:text="'Season: '+ ${s.getSeasonNumber()}"></a>
+                        </tr>
+                    </div>
+                </div>
+
+            </li>
+        </ul>
     </div>
-    <table class="table">
-
-        <tr th:each="episode : ${serie.getSeasons().get(season).getEpisodes()}">
-            <td>
-                <a th:text="${episode.getEpisodeNumber()}"></a>
-            </td>
-            <td>
-                <a th:text="${episode.getName()}"></a>
-            </td>
-            <td>
-                <a th:text="${episode.getReleaseDate()}"></a>
-            </td>
-            <td>
-
-            <a th:href="@{${'/'}+ ${episode.getEpisodeNumber()}}"> watchedd</a>
-<!--                <a th:href="@{${s.getSeasonNumber()}}" th:text="'Season: '+ ${s.getSeasonNumber()}"></a>-->
-
-
-        </td>
-        <td>
-            <form action="/notwatched" method="post">
-                <input type="Submit" value="delete">
-            </form>
-        </td>
-        </tr>
-
-    </table>
-
+    <div class="episode">
+        <table class="table">
+            <tr th:each="episode : ${serie.getSeasons().get(season).getEpisodes()}">
+                <td>
+                    <a th:text="${episode.getEpisodeNumber()}"></a>
+                </td>
+                <td>
+                    <a th:text="${episode.getName()}"></a>
+                </td>
+                <td>
+                    <a th:text="${episode.getReleaseDate()}"></a>
+                </td>
+                <td>
+                    <form th:action="'/serie/' + ${serie.getThemoviedbSerieID()} + '/' + ${season} + '/' + ${episode.getEpisodeNumber()}"
+                          method="post">
+                        <button class="eye-button" type="submit" formmethod="post">
+                        <span th:if="${user.getEpisodeWatched(serie.getThemoviedbSerieID(), season, episode.getEpisodeNumber())}"
+                              style="color: #3CB2BC">
+                            <i class="fa fa-eye fa-lg"></i>
+                        </span>
+                            <span th:unless="${user.getEpisodeWatched(serie.getThemoviedbSerieID(), season, episode.getEpisodeNumber())}"
+                                  style="color: white">
+                            <i class="fa fa-eye fa-lg"></i>
+                        </span>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>

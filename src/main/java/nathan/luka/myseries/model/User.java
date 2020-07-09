@@ -1,12 +1,16 @@
 package nathan.luka.myseries.model;
 
+import nathan.luka.myseries.dataprovider.DataProvider;
 import nathan.luka.myseries.model.usermetadata.UserSerieMetaData;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
-public class User {
+public class User implements Callable<User> {
     public static int lastId = 1;
 
     private int id;
@@ -19,14 +23,11 @@ public class User {
 
     private Set<Serie> serie;
 
-    private List<UserSerieMetaData> userSerieMetaDataList;
+    private final List<UserSerieMetaData> userSerieMetaDataList;
 
     private Set<Review> reviews;
 
     private boolean loggedIn;
-    public User(){
-
-    }
 
 
     public User(String password, String userName) {
@@ -35,26 +36,70 @@ public class User {
         this.userName = userName;
         this.id = lastId;
         lastId++;
+
+
     }
 
-    public void addSerie(Serie serie){
+    public void addSerie(Serie serie) {
         userSerieMetaDataList.add(new UserSerieMetaData(serie));
     }
 
-    public void setEpisodeWatched(Integer themoviedbSerieID, Integer seasonNumber, Integer episodeNumber){
-        for (int i = 0; i < userSerieMetaDataList.size(); i++) {
-            if (userSerieMetaDataList.get(i).getThemoviedbSerieID().equals(themoviedbSerieID)){
-                //match
-
-                if (!userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(seasonNumber).getUserEpisodeMetaDataList().get(episodeNumber).isWatched()){
-                    userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(seasonNumber).getUserEpisodeMetaDataList().get(episodeNumber).setWatched(true);
-                } else{
-                    userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(seasonNumber).getUserEpisodeMetaDataList().get(episodeNumber).setWatched(false);
+    public void setEpisodeWatched(Integer themoviedbSerieID, Integer seasonNumber, Integer episodeNumber) {
+        if (userSerieMetaDataList.size() != 0) {
+            for (int i = 0; i < userSerieMetaDataList.size(); i++) {
+                if (userSerieMetaDataList.get(i).getThemoviedbSerieID().equals(themoviedbSerieID)) {
+                    //match
+                    for (int j = 0; j < userSerieMetaDataList.get(i).getUserSeasonMetaDataList().size(); j++) {
+                        if (Objects.equals(seasonNumber, userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(j).getSeasonNumber())) {
+                            //season match
+                            for (int k = 0; k < userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(j).getUserEpisodeMetaDataList().size(); k++) {
+                                if (Objects.equals(episodeNumber, userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(j).getUserEpisodeMetaDataList().get(k).getEpisodeNumber())) {
+                                    //Episode match
+                                    if (userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(j).getUserEpisodeMetaDataList().get(k).isWatched()) {
+                                        userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(j).getUserEpisodeMetaDataList().get(k).setWatched(false);
+                                        break;
+                                    } else {
+                                        userSerieMetaDataList.get(i).getUserSeasonMetaDataList().get(j).getUserEpisodeMetaDataList().get(k).setWatched(true);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                System.out.println("gelukt niggah");
             }
         }
+    }
 
+    public boolean getEpisodeWatched(Integer themoviedbSerieID, Integer seasonNumber, Integer episodeNumber) {
+        //If the userSerieMetaDataList is empty add all series
+        if (userSerieMetaDataList.isEmpty()) {
+            List<Serie> serieList = DataProvider.getDataProvider().getSeries();
+            for (int i = 0; i < serieList.size(); i++) {
+                userSerieMetaDataList.add(new UserSerieMetaData(serieList.get(i)));
+            }
+            for (UserSerieMetaData userSerieMetaData : userSerieMetaDataList) {
+                System.out.println(userSerieMetaData.getThemoviedbSerieID());
+            }
+        }
+        for (UserSerieMetaData userSerieMetaData : userSerieMetaDataList) {
+            if (userSerieMetaData.getThemoviedbSerieID().equals(themoviedbSerieID)) {
+                //match
+                for (int j = 0; j < userSerieMetaData.getUserSeasonMetaDataList().size(); j++) {
+                    if (Objects.equals(seasonNumber, userSerieMetaData.getUserSeasonMetaDataList().get(j).getSeasonNumber())) {
+                        //season match
+                        for (int k = 0; k < userSerieMetaData.getUserSeasonMetaDataList().get(j).getUserEpisodeMetaDataList().size(); k++) {
+                            if (Objects.equals(episodeNumber, userSerieMetaData.getUserSeasonMetaDataList().get(j).getUserEpisodeMetaDataList().get(k).getEpisodeNumber())) {
+                                //Episode match
+                                return userSerieMetaData.getUserSeasonMetaDataList().get(j).getUserEpisodeMetaDataList().get(k).isWatched();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        //If the episode is not found in userSerieMetaDataList return false
+        return false;
     }
 
     public String getEmail() {
@@ -128,5 +173,10 @@ public class User {
 
     public String toString() {
         return userName + email;
+    }
+
+    @Override
+    public User call() throws Exception {
+        return this;
     }
 }

@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-@JsonPropertyOrder(alphabetic=true)
+
+@JsonPropertyOrder(alphabetic = true)
 @JsonRootName(value = "Season")
 public class Season {
 
@@ -25,7 +27,6 @@ public class Season {
         this.episodeCount = episodeCount;
         this.themoviedbSerieID = themoviedbSerieID;
     }
-
 
 
     public Integer getEpisodeCount() {
@@ -68,4 +69,13 @@ public class Season {
     public void setThemoviedbSerieID(Integer themoviedbSerieID) {
         this.themoviedbSerieID = themoviedbSerieID;
     }
+
+    public static class SortbySeasonNumber implements Comparator<Season> {
+        // Used for sorting in ascending order of
+        // roll number
+        public int compare(Season a, Season b) {
+            return a.seasonNumber - b.seasonNumber;
+        }
+    }
+
 }

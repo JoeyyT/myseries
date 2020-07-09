@@ -79,7 +79,7 @@ public class SeriesController {
         return "redirect:/";
     }
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String homeView(Model model) {
         model.addAttribute("home_page", this.model.getSeries());
         return "index";
@@ -121,21 +121,42 @@ public class SeriesController {
         Serie serie = this.model.getSerieById(id);
         if (serie != null) {
             model.addAttribute("serie", serie);
+            model.addAttribute("user", this.model.getUserByUsername((String) httpSession.getAttribute("username")));
             return "serie";
         }
         return null;
     }
+//    @GetMapping(path = "/delete/{id}")
+//    public String deleteTournament(@PathVariable int id, RedirectAttributes redirectAttributes){
+//        DataProvider.deleteTournament(id);
+//        redirectAttributes.addFlashAttribute("response", "Toernooi verwijderd!");
+//        redirectAttributes.addFlashAttribute("responseClass", "response-success");
+//        return "redirect:/overview";
+//    }
 
-    @GetMapping("/serie/{id}/{season}/{episode}")
-    public String setEpisodeWatched(@PathVariable int id, @PathVariable int season, HttpSession httpSession, @PathVariable int episode) {
+
+    @PostMapping("/serie/{id}/{season}/{episode}")
+    public RedirectView setEpisodeWatched(@PathVariable int id, @PathVariable int season, @PathVariable int episode, HttpSession httpSession ) {
         User user = model.getUserByUsername((String) httpSession.getAttribute("username"));
         Serie serie = model.getSerieById(id);
 //        @RequestParam("episode") int episode
-        System.out.println("jp");
-        user.setEpisodeWatched(serie.getThemoviedbSerieID(), season, episode);
-        return "redirect: /serie"+ "/" + id + "/" + season;
-    }
+        System.out.println("postMapping setEpisodeWatched");
 
+        user.setEpisodeWatched(serie.getThemoviedbSerieID(), season, episode);
+        return new RedirectView("/serie/" + id + "/" + season);
+    }
+    @GetMapping("/serie/{id}/{season}/{episode}")
+    public RedirectView setEpisodeWatched2(@PathVariable int id, @PathVariable int season, @PathVariable int episode, HttpSession httpSession ) {
+        User user = model.getUserByUsername((String) httpSession.getAttribute("username"));
+        Serie serie = model.getSerieById(id);
+//        @RequestParam("episode") int episode
+        System.out.println("getMapping setEpisodeWatched");
+
+
+        user.setEpisodeWatched(serie.getThemoviedbSerieID(), season, episode);
+        return new RedirectView("/serie/" + id + "/" + season);
+//        return "redirect: /serie/" + id + "/" + season;
+    }
 
     @PostMapping("/serie/delete/{id}")
     public RedirectView removeSerieTitle(@PathVariable("id") int id, HttpSession httpSession) {

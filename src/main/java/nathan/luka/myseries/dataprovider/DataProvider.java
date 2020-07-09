@@ -13,14 +13,16 @@ import java.lang.reflect.Type;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 public class DataProvider {
     private static DataProvider dataProvider;
-    private final HashMap<String, User> users;
-    private final ArrayList<Serie> series;
+    private final static HashMap<String, User> users =new HashMap<String, User>() ;
+    private ArrayList<Serie> series;
+    static int counter;
 
     public DataProvider() {
-        users = new HashMap<String, User>();
+//        users = new HashMap<String, User>();
         series = new ArrayList<>();
 
         init();
@@ -55,6 +57,88 @@ public class DataProvider {
 //        serieInfoList.add(new SerieInfo(1434, 1, 3));    // Family Guy (1999)
 
 //        getSeriesFromThemoviedb(serieInfoList);
+
+        series = removeDuplicatesFromSeriesAndSeasons(series);
+
+
+    }
+
+    /**
+     *  Removes duplicates from Series and seasons
+     * @param list Serie list
+     * @return duplicate free Serie list
+     */
+
+    public static ArrayList<Serie> removeDuplicatesFromSeriesAndSeasons(List<Serie> list) {
+        //Removes exact duplicates from Series
+        List<Serie> tempSeries = removeDuplicatesFromSerie(list);
+        List<Season> tempSeasons;
+
+        //Removes duplicate seasons per serie
+        for (int i = 0; i < tempSeries.size(); i++) {
+            //serie loop
+            tempSeasons = tempSeries.get(i).getSeasons();
+            tempSeasons = removeDuplicatesFromSeason(tempSeasons);
+            tempSeries.get(i).setSeasons(tempSeasons);
+
+        }
+        return (ArrayList<Serie>) tempSeries;
+    }
+
+    /**
+     * Removes any duplicates from Series. This method removes duplicates that return true by the equals() method
+     * @param list Series list
+     * @return List of Series free of exact duplicates
+     */
+    public static List<Serie> removeDuplicatesFromSerie(List<Serie> list) {
+            List<Serie> newList = (List<Serie>) list.stream()
+                    .distinct()
+                    .collect(Collectors.toList());
+
+        // return the list
+        return newList;
+    }
+
+
+    /**
+     * Removes any duplicates from Season. This method removes duplicates that return true by the equals() method and removes Seasons with same season number.
+     * @param list Series list
+     * @return List of Series free of exact duplicates
+     */
+    public static List<Season> removeDuplicatesFromSeason(List<Season> list) {
+        //Removes exact duplicates
+        List<Season> newList = (List<Season>) list.stream()
+                .distinct()
+                .collect(Collectors.toList());
+        try {
+
+            for (int i = 0; i < newList.size(); i++) {
+                for (int j = 0; j < newList.size(); j++) {
+                    if (!(newList.get(i).equals(newList.get(j)))){
+                        //It's not the same object
+                        if (newList.get(i).getSeasonNumber().equals(newList.get(j).getSeasonNumber())){
+                            //Matching season number
+                            if (newList.get(i).getEpisodes().size() > newList.get(j).getEpisodes().size()){
+                                //Delete the season with the least episodes
+                                newList.remove(j);
+                                //Correct loop
+                                j++;
+                            } else {
+                                newList.remove(i);
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (IndexOutOfBoundsException ide){
+            System.out.println(ide);
+        }
+
+        newList.sort(new Season.SortbySeasonNumber());
+
+        // return the list
+        return newList;
     }
 
     /**
@@ -196,41 +280,44 @@ public class DataProvider {
     }
 
     private void init() {
+//        ExecutorService executor = Executors.newFixedThreadPool(5);
+//        Future<User> future = executor.submit(new User("luka123", "luka"));
+
         User luka = new User("luka123", "luka");
-        User nathan = new User("nathan123", "nathan");
-        User theRealDeal = new User("therealdeal123", "therealdeal123");
+//        User nathan = new User("nathan123", "nathan");
+//        User theRealDeal = new User("therealdeal123", "therealdeal123");
 
-        addUser(luka);
-        addUser(nathan);
-        addUser(theRealDeal);
+        addUser((User) luka);
+//        addUser(nathan);
+//        addUser(theRealDeal);
 
-        Serie serie = new Serie("deez nuts", theRealDeal, "/img/deeznuts.jpg");
-        serie.addReview(new Review("good movie about deez nuts", nathan));
-        serie.addReview(new Review("ok", luka));
-        serie.addReview(new Review("yup", theRealDeal));
-
-
-        Serie tokyo_ghoul = new Serie("Tokyo Ghoul", nathan, "/img/tokyo_ghoul.jpg");
-        tokyo_ghoul.addReview(new Review("ok", luka));
-
-        Serie pokemon = new Serie("pokemon", luka, "/img/pokemon.jpg");
-        pokemon.addReview(new Review("good movie", theRealDeal));
-
-
-        Serie deez_nuts2 = new Serie("deez nuts", theRealDeal, "/img/deeznuts.jpg");
-        deez_nuts2.addReview(new Review("good movie about deez nuts", nathan));
-        deez_nuts2.addReview(new Review("ok", luka));
-        deez_nuts2.addReview(new Review("yup", theRealDeal));
-
-        Serie tokyo_ghoul2 = new Serie("Tokyo Ghoul", nathan, "/img/tokyo_ghoul.jpg");
-        tokyo_ghoul2.addReview(new Review("ok", luka));
-
-        Serie pokemon2 = new Serie("pokemon", luka, "/img/pokemon.jpg");
-        pokemon2.addReview(new Review("good movie", theRealDeal));
-
-        Serie hunterXHunter2011 = new Serie("Hunter x Hunter (2011)", luka, "/img/hunterxhunter2011.jpg");
-
-        Serie vikings = new Serie("Vikings", luka, "/img/vikings.jpg");
+//        Serie serie = new Serie("deez nuts", theRealDeal, "/img/deeznuts.jpg");
+//        serie.addReview(new Review("good movie about deez nuts", nathan));
+//        serie.addReview(new Review("ok", luka));
+//        serie.addReview(new Review("yup", theRealDeal));
+//
+//
+//        Serie tokyo_ghoul = new Serie("Tokyo Ghoul", nathan, "/img/tokyo_ghoul.jpg");
+//        tokyo_ghoul.addReview(new Review("ok", luka));
+//
+//        Serie pokemon = new Serie("pokemon", luka, "/img/pokemon.jpg");
+//        pokemon.addReview(new Review("good movie", theRealDeal));
+//
+//
+//        Serie deez_nuts2 = new Serie("deez nuts", theRealDeal, "/img/deeznuts.jpg");
+//        deez_nuts2.addReview(new Review("good movie about deez nuts", nathan));
+//        deez_nuts2.addReview(new Review("ok", luka));
+//        deez_nuts2.addReview(new Review("yup", theRealDeal));
+//
+//        Serie tokyo_ghoul2 = new Serie("Tokyo Ghoul", nathan, "/img/tokyo_ghoul.jpg");
+//        tokyo_ghoul2.addReview(new Review("ok", luka));
+//
+//        Serie pokemon2 = new Serie("pokemon", luka, "/img/pokemon.jpg");
+//        pokemon2.addReview(new Review("good movie", theRealDeal));
+//
+//        Serie hunterXHunter2011 = new Serie("Hunter x Hunter (2011)", luka, "/img/hunterxhunter2011.jpg");
+//
+//        Serie vikings = new Serie("Vikings", luka, "/img/vikings.jpg");
 
 //        series.add(deez_nuts2);
 //        series.add(tokyo_ghoul2);
@@ -249,7 +336,7 @@ public class DataProvider {
 
     public Serie getSerieById(int id) {
         for (Serie serie : series) {
-            if (serie.getId() == id) {
+            if (serie.getThemoviedbSerieID() == id) {
                 return serie;
             }
         }
@@ -291,20 +378,20 @@ public class DataProvider {
         return null;
     }
 
-    public ArrayList<Serie> getSeries() {
+    public  ArrayList<Serie> getSeries() {
         return (series);
     }
 
     public boolean hasUserWithUsername(String username) {
-        return this.users.containsKey(username);
+        return users.containsKey(username);
     }
 
     public User getUserByUsername(String username) {
-        return this.users.get(username);
+        return users.get(username);
     }
 
     public void deleteUser(String username) {
-        this.users.remove(username);
+        users.remove(username);
     }
 
     public boolean authenticate(String username, String password) {

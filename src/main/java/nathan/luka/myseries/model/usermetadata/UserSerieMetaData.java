@@ -1,5 +1,6 @@
 package nathan.luka.myseries.model.usermetadata;
 
+import nathan.luka.myseries.dataprovider.DataProvider;
 import nathan.luka.myseries.model.Serie;
 
 import java.util.ArrayList;
@@ -13,18 +14,24 @@ public class UserSerieMetaData {
     private Integer completed;
     private Serie serie;
 
-    private List<UserSeasonMetaData> userSeasonMetaDataList;
+    private final List<UserSeasonMetaData> userSeasonMetaDataList;
 
     public UserSerieMetaData(Integer themoviedbSerieID) {
-        this.themoviedbSerieID = themoviedbSerieID;
+        userSeasonMetaDataList = new ArrayList<>();
+
+        init(DataProvider.getInstance().getSerieById(themoviedbSerieID));
     }
     public UserSerieMetaData(Serie serie) {
+        userSeasonMetaDataList = new ArrayList<>();
+        init(serie);
+    }
+
+    private void init(Serie serie){
         this.serie = serie;
         this.themoviedbSerieID = serie.getThemoviedbSerieID();
         this.maxEP = serie.getAmountOfEpisodes();
-        this.userSeasonMetaDataList = new ArrayList<>();
         for (int i = 0; i < serie.getSeasons().size(); i++) {
-            userSeasonMetaDataList.add(i, new UserSeasonMetaData(serie, serie.getSeasons().get(i)));
+            userSeasonMetaDataList.add(0, new UserSeasonMetaData(serie, serie.getSeasons().get(i)));
         }
     }
 
@@ -72,9 +79,7 @@ public class UserSerieMetaData {
         return userSeasonMetaDataList;
     }
 
-    public void setUserSeasonMetaDataList(List<UserSeasonMetaData> userSeasonMetaDataList) {
-        this.userSeasonMetaDataList = userSeasonMetaDataList;
-    }
+
 }
 
 
